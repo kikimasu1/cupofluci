@@ -16,7 +16,7 @@ export const copy = {
   homeMe10m: "Me in 10 minutes?",
   homeNowBlurb: "What am I doing now?",
   homeContact: "Contact me",
-  homeContactEmail: "hello@example.com",
+  homeContactEmail: "lucidreaminxx@gmail.com",
   homeNewest: "Newest articles",
   homeMore: "… and more here.",
   contactTitle: "contact me",
