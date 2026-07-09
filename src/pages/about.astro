@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { copy } from "../i18n/ui";
+---
+
+<BaseLayout title="About" description="About Luci.">
+  <h1>{copy.aboutTitle}</h1>
+  <div class="prose">
+    {copy.aboutBody.map((p) => <p>{p}</p>)}
+  </div>
+</BaseLayout>

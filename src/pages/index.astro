@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPosts, formatDate } from "../lib/posts";
+import { copy } from "../i18n/ui";
+import { path } from "../lib/path";
+
+const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
+---
+
+<BaseLayout title="cupofluci" description="A small personal site by Luci.">
+  <h2>
+    <a href={path("/about")}>{copy.homeMe10s}</a>
+  </h2>
+  <p>{copy.homeTagline}</p>
+  {copy.homeTimeline.map((line) => <p>{line}</p>)}
+
+  <h2>
+    <a href={path("/about")}>{copy.homeMe10m}</a>
+  </h2>
+  <p>
+    See my <a href={path("/about")}>/about</a> page.
+  </p>
+
+  <h2>
+    <a href={path("/now")}>{copy.homeNowBlurb}</a>
+  </h2>
+  <p>
+    See my <a href={path("/now")}>/now</a> page.
+  </p>
+
+  <h2>
+    <a href={path("/contact")}>{copy.homeContact}</a>
+  </h2>
+  <p>
+    I like meeting people, and I reply to every email, so{" "}
+    <a href={path("/contact")}>say hello</a>.
+  </p>
+
+  <h2>{copy.homeNewest}</h2>
+  {
+    posts.length ? (
+      <ul class="list">
+        {posts.map((post) => (
+          <li>
+            <span class="date">{formatDate(post.data.date)}</span>
+            <a href={path(`/blog/${post.id}`)}>{post.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="muted">{copy.blogEmpty}</p>
+    )
+  }
+  <p><a href={path("/blog")}>{copy.homeMore}</a></p>
+</BaseLayout>

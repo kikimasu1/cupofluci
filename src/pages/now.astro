@@ -1,0 +1,14 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { copy } from "../i18n/ui";
+
+const updated = "2026-07-09";
+---
+
+<BaseLayout title="Now" description="What Luci is doing now.">
+  <h1>{copy.nowTitle}</h1>
+  <p class="muted">{copy.nowUpdated}: {updated}</p>
+  <div class="prose">
+    {copy.nowBody.map((p) => <p>{p}</p>)}
+  </div>
+</BaseLayout>

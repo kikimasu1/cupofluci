@@ -1,0 +1,49 @@
+---
+import "../styles/global.css";
+import { copy } from "../i18n/ui";
+import { path } from "../lib/path";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "cupofluci",
+  description = "A small personal site by Luci.",
+} = Astro.props;
+
+const pageTitle = title === "cupofluci" ? title : `${title} · cupofluci`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href={path("/favicon.svg")} type="image/svg+xml" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href={path("/")}>{copy.brand}</a>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <h2>{copy.footerOther}</h2>
+        <p>
+          <a href={copy.instagramUrl} target="_blank" rel="noopener noreferrer"
+            >Instagram</a
+          >
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

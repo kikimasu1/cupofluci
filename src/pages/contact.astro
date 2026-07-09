@@ -1,0 +1,157 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { copy } from "../i18n/ui";
+import { countries, usStates } from "../data/places";
+---
+
+<BaseLayout title="Contact" description="Contact Luci.">
+  <div class="contact-top">
+    <div>
+      <h1>{copy.contactTitle}</h1>
+      <p>{copy.contactLead}</p>
+    </div>
+    <p class="contact-name" aria-hidden="true">{copy.contactHumanAnswer}</p>
+  </div>
+
+  <form class="contact-form" id="contact-form" novalidate>
+    <div class="field">
+      <label for="full-name"
+        >your full <strong>name</strong></label
+      >
+      <input id="full-name" name="name" type="text" required maxlength="120" autocomplete="name" />
+    </div>
+
+    <div class="field">
+      <label for="email"
+        >your <strong>email</strong> address</label
+      >
+      <input
+        id="email"
+        name="email"
+        type="email"
+        required
+        maxlength="120"
+        autocomplete="email"
+      />
+    </div>
+
+    <div class="field">
+      <label for="country"
+        >your <strong>country</strong></label
+      >
+      <select id="country" name="country" required>
+        <option value="" disabled>…</option>
+        {
+          countries.map((c) => (
+            <option value={c} selected={c === "U.S.A." ? true : undefined}>
+              {c}
+            </option>
+          ))
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="city"
+        >nearest <strong>city</strong></label
+      >
+      <input id="city" name="city" type="text" required maxlength="80" autocomplete="address-level2" />
+    </div>
+
+    <div class="field" id="state-field">
+      <label for="state"><strong>state</strong></label>
+      <select id="state" name="state">
+        <option value="">…</option>
+        {usStates.map((s) => <option value={s}>{s}</option>)}
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="message"><strong>message</strong></label>
+      <textarea id="message" name="message" required maxlength="4000" rows="6"></textarea>
+    </div>
+
+    <div class="field hp" aria-hidden="true">
+      <label for="company">company</label>
+      <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="field">
+      <label for="human"
+        >prove you are human: type my <strong>first name</strong> (shown above)</label
+      >
+      <input id="human" name="human" type="text" required maxlength="40" autocomplete="off" />
+    </div>
+
+    <button type="submit">{copy.contactSubmit}</button>
+    <p class="status muted" id="contact-status" role="status" aria-live="polite"></p>
+  </form>
+</BaseLayout>
+
+<script>
+  import { copy } from "../i18n/ui";
+
+  const form = document.getElementById("contact-form") as HTMLFormElement | null;
+  const country = document.getElementById("country") as HTMLSelectElement | null;
+  const stateField = document.getElementById("state-field");
+  const state = document.getElementById("state") as HTMLSelectElement | null;
+  const statusEl = document.getElementById("contact-status");
+  const expected = copy.contactHumanAnswer.toLowerCase();
+
+  function syncState() {
+    const isUs = country?.value === "U.S.A.";
+    if (stateField) stateField.hidden = !isUs;
+    if (state) {
+      state.required = Boolean(isUs);
+      if (!isUs) state.value = "";
+    }
+  }
+
+  country?.addEventListener("change", syncState);
+  syncState();
+
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!form) return;
+
+    const fd = new FormData(form);
+    if (String(fd.get("company") ?? "").trim()) {
+      if (statusEl) statusEl.textContent = copy.contactThanks;
+      form.reset();
+      syncState();
+      return;
+    }
+
+    const human = String(fd.get("human") ?? "").trim().toLowerCase();
+    if (human !== expected) {
+      if (statusEl) statusEl.textContent = copy.contactHumanFail;
+      return;
+    }
+
+    const name = String(fd.get("name") ?? "").trim();
+    const email = String(fd.get("email") ?? "").trim();
+    const countryVal = String(fd.get("country") ?? "").trim();
+    const city = String(fd.get("city") ?? "").trim();
+    const stateVal = String(fd.get("state") ?? "").trim();
+    const message = String(fd.get("message") ?? "").trim();
+
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Country: ${countryVal}`,
+      `City: ${city}`,
+      stateVal ? `State: ${stateVal}` : "",
+      "",
+      message,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const mailto = `mailto:${encodeURIComponent(copy.homeContactEmail)}?subject=${encodeURIComponent(
+      `Hello from ${name}`,
+    )}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailto;
+    if (statusEl) statusEl.textContent = copy.contactThanks;
+  });
+</script>

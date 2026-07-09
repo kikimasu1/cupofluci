@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPosts, formatDate } from "../../lib/posts";
+import { copy } from "../../i18n/ui";
+
+const posts = (await getPosts()).filter((p) => !p.data.draft);
+---
+
+<BaseLayout title="Blog" description="Articles from cupofluci.">
+  <h1>{copy.blogTitle}</h1>
+  {
+    posts.length ? (
+      <ul class="list">
+        {posts.map((post) => (
+          <li>
+            <span class="date">{formatDate(post.data.date)}</span>
+            <a href={`/blog/${post.id}`}>{post.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="muted">{copy.blogEmpty}</p>
+    )
+  }
+</BaseLayout>
