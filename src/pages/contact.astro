@@ -147,7 +147,7 @@ import { countries, usStates } from "../data/places";
       .filter(Boolean)
       .join("\n");
 
-    const mailto = `mailto:${encodeURIComponent(copy.homeContactEmail)}?subject=${encodeURIComponent(
+    const mailto = `mailto:${copy.homeContactEmail}?subject=${encodeURIComponent(
       `Hello from ${name}`,
     )}&body=${encodeURIComponent(body)}`;
 
