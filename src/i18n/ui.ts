@@ -25,6 +25,10 @@ export const copy = {
   contactThanks: "Opening your email app…",
   contactHumanAnswer: "luci",
   contactHumanFail: "Type my first name to prove you’re human.",
+  contactFillAll: "Please fill in every required field.",
+  contactNeedState: "Please choose your state.",
+  contactBadEmail: "Please enter a valid email address.",
+  contactSlowDown: "Please wait a few seconds before trying again.",
   aboutTitle: "About",
   aboutBody: [
     "Hi — I’m Luci.",

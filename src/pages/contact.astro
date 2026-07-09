@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { copy } from "../i18n/ui";
 import { countries, usStates } from "../data/places";
+
+const contactEmail = copy.homeContactEmail;
 ---
 
 <BaseLayout title="Contact" description="Contact Luci.">
@@ -13,12 +15,25 @@ import { countries, usStates } from "../data/places";
     <p class="contact-name" aria-hidden="true">{copy.contactHumanAnswer}</p>
   </div>
 
-  <form class="contact-form" id="contact-form" novalidate>
+  <form
+    class="contact-form"
+    id="contact-form"
+    data-to={contactEmail}
+    data-human={copy.contactHumanAnswer}
+  >
     <div class="field">
       <label for="full-name"
         >your full <strong>name</strong></label
       >
-      <input id="full-name" name="name" type="text" required maxlength="120" autocomplete="name" />
+      <input
+        id="full-name"
+        name="name"
+        type="text"
+        required
+        minlength="1"
+        maxlength="80"
+        autocomplete="name"
+      />
     </div>
 
     <div class="field">
@@ -55,7 +70,15 @@ import { countries, usStates } from "../data/places";
       <label for="city"
         >nearest <strong>city</strong></label
       >
-      <input id="city" name="city" type="text" required maxlength="80" autocomplete="address-level2" />
+      <input
+        id="city"
+        name="city"
+        type="text"
+        required
+        minlength="1"
+        maxlength="80"
+        autocomplete="address-level2"
+      />
     </div>
 
     <div class="field" id="state-field">
@@ -68,9 +91,16 @@ import { countries, usStates } from "../data/places";
 
     <div class="field">
       <label for="message"><strong>message</strong></label>
-      <textarea id="message" name="message" required maxlength="4000" rows="6"></textarea>
+      <textarea
+        id="message"
+        name="message"
+        required
+        minlength="1"
+        maxlength="2000"
+        rows="6"></textarea>
     </div>
 
+    <!-- Honeypot: bots fill this; humans never see it -->
     <div class="field hp" aria-hidden="true">
       <label for="company">company</label>
       <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
@@ -80,7 +110,15 @@ import { countries, usStates } from "../data/places";
       <label for="human"
         >prove you are human: type my <strong>first name</strong> (shown above)</label
       >
-      <input id="human" name="human" type="text" required maxlength="40" autocomplete="off" />
+      <input
+        id="human"
+        name="human"
+        type="text"
+        required
+        maxlength="40"
+        autocomplete="off"
+        spellcheck="false"
+      />
     </div>
 
     <button type="submit">{copy.contactSubmit}</button>
@@ -89,14 +127,47 @@ import { countries, usStates } from "../data/places";
 </BaseLayout>
 
 <script>
-  import { copy } from "../i18n/ui";
-
   const form = document.getElementById("contact-form") as HTMLFormElement | null;
   const country = document.getElementById("country") as HTMLSelectElement | null;
   const stateField = document.getElementById("state-field");
   const state = document.getElementById("state") as HTMLSelectElement | null;
   const statusEl = document.getElementById("contact-status");
-  const expected = copy.contactHumanAnswer.toLowerCase();
+  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+  const toEmail = form?.dataset.to?.trim() ?? "";
+  const expectedHuman = (form?.dataset.human ?? "luci").trim().toLowerCase();
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const CONTROL_RE = /[\r\n\0]/;
+  const MAX = {
+    name: 80,
+    email: 120,
+    city: 80,
+    message: 2000,
+    human: 40,
+  } as const;
+
+  let lastSubmitAt = 0;
+
+  function setStatus(text: string) {
+    if (statusEl) statusEl.textContent = text;
+  }
+
+  function clean(value: FormDataEntryValue | null, max: number): string {
+    return String(value ?? "")
+      .replace(CONTROL_RE, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, max);
+  }
+
+  function cleanMultiline(value: FormDataEntryValue | null, max: number): string {
+    return String(value ?? "")
+      .replace(/\0/g, "")
+      .replace(/\r\n?/g, "\n")
+      .trim()
+      .slice(0, max);
+  }
 
   function syncState() {
     const isUs = country?.value === "U.S.A.";
@@ -112,28 +183,75 @@ import { countries, usStates } from "../data/places";
 
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
-    if (!form) return;
+    if (!form || !submitBtn) return;
+
+    setStatus("");
+
+    // Rate limit: one attempt per 8 seconds
+    const now = Date.now();
+    if (now - lastSubmitAt < 8000) {
+      setStatus("Please wait a few seconds before trying again.");
+      return;
+    }
 
     const fd = new FormData(form);
-    if (String(fd.get("company") ?? "").trim()) {
-      if (statusEl) statusEl.textContent = copy.contactThanks;
+
+    // Honeypot — silently drop bots
+    if (clean(fd.get("company"), 120)) {
+      setStatus("Thanks — message sent.");
       form.reset();
       syncState();
       return;
     }
 
-    const human = String(fd.get("human") ?? "").trim().toLowerCase();
-    if (human !== expected) {
-      if (statusEl) statusEl.textContent = copy.contactHumanFail;
+    if (!toEmail || !EMAIL_RE.test(toEmail) || CONTROL_RE.test(toEmail)) {
+      setStatus("Contact email is misconfigured.");
       return;
     }
 
-    const name = String(fd.get("name") ?? "").trim();
-    const email = String(fd.get("email") ?? "").trim();
-    const countryVal = String(fd.get("country") ?? "").trim();
-    const city = String(fd.get("city") ?? "").trim();
-    const stateVal = String(fd.get("state") ?? "").trim();
-    const message = String(fd.get("message") ?? "").trim();
+    const name = clean(fd.get("name"), MAX.name);
+    const email = clean(fd.get("email"), MAX.email).toLowerCase();
+    const countryVal = clean(fd.get("country"), 80);
+    const city = clean(fd.get("city"), MAX.city);
+    const stateVal = clean(fd.get("state"), 40);
+    const message = cleanMultiline(fd.get("message"), MAX.message);
+    const human = clean(fd.get("human"), MAX.human).toLowerCase();
+
+    if (!name || !email || !countryVal || !city || !message || !human) {
+      setStatus("Please fill in every required field.");
+      form.reportValidity();
+      return;
+    }
+
+    if (countryVal === "U.S.A." && !stateVal) {
+      setStatus("Please choose your state.");
+      state?.focus();
+      return;
+    }
+
+    if (!EMAIL_RE.test(email) || CONTROL_RE.test(email)) {
+      setStatus("Please enter a valid email address.");
+      return;
+    }
+
+    if (human !== expectedHuman) {
+      setStatus("Type my first name to prove you’re human.");
+      return;
+    }
+
+    // Extra length / injection guards for mailto headers
+    if (
+      CONTROL_RE.test(name) ||
+      CONTROL_RE.test(countryVal) ||
+      CONTROL_RE.test(city) ||
+      CONTROL_RE.test(stateVal)
+    ) {
+      setStatus("Please remove line breaks from the fields.");
+      return;
+    }
+
+    lastSubmitAt = now;
+    submitBtn.disabled = true;
 
     const body = [
       `Name: ${name}`,
@@ -144,14 +262,19 @@ import { countries, usStates } from "../data/places";
       "",
       message,
     ]
-      .filter(Boolean)
+      .filter((line) => line !== "")
       .join("\n");
 
-    const mailto = `mailto:${copy.homeContactEmail}?subject=${encodeURIComponent(
-      `Hello from ${name}`,
-    )}&body=${encodeURIComponent(body)}`;
+    const mailto =
+      `mailto:${toEmail}` +
+      `?subject=${encodeURIComponent(`Hello from ${name}`)}` +
+      `&body=${encodeURIComponent(body)}`;
 
     window.location.href = mailto;
-    if (statusEl) statusEl.textContent = copy.contactThanks;
+    setStatus("Opening your email app…");
+
+    window.setTimeout(() => {
+      submitBtn.disabled = false;
+    }, 2000);
   });
 </script>
