@@ -99,13 +99,20 @@ img {
 .search-heading {
   text-transform: uppercase;
   letter-spacing: 0.02em;
+  text-align: center;
+}
+
+#search-status {
+  text-align: center;
 }
 
 .search-form {
   display: flex;
   align-items: stretch;
+  justify-content: center;
   gap: 0.5rem;
-  margin: 1rem 0 1.25rem;
+  width: min(100%, 18rem);
+  margin: 1rem auto 1.25rem;
 }
 
 .search-form input[type="search"] {
