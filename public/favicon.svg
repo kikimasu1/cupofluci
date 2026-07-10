@@ -1,3 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <text y=".9em" font-size="90">🌴</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="L">
+  <rect width="64" height="64" rx="14" fill="#111318"/>
+  <text
+    x="32"
+    y="47"
+    text-anchor="middle"
+    fill="#ccccff"
+    font-family="Georgia, 'Times New Roman', Times, serif"
+    font-size="46"
+    font-weight="700"
+    font-style="italic"
+  >L</text>
+  <path
+    fill="none"
+    stroke="#ccccff"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    d="M23 50.5c6 3.8 13.5 3.2 19.5-1"
+  />
 </svg>
