@@ -11,9 +11,9 @@ export const copy = {
   homeMe10s: "ME IN 10 SECONDS",
   homeTagline: "Curious human, writer, builder, and conversationalist.",
   homeTimeline: [
-    "(earlier): Student. Learning by making things, breaking things, and writing it down.",
-    "(recent): Builder. Shipping small projects, reading widely, talking to people.",
-    "(next): ?",
+    "(2019-2025): Student. Learning by making things, breaking things, and writing it down.",
+    "(2025-2026): Builder. Shipping small projects, reading widely, talking to people.",
+    "(2026-): ?",
   ],
   homeMe10m: "ME IN 10 MINUTES?",
   homeNowBlurb: "WHAT AM I DOING NOW?",
