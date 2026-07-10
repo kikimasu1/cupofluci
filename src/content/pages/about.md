@@ -9,9 +9,9 @@ This is a place to keep my writing, share my thoughts, and my life updates. I lo
 
 I care about critical thinking, making this world a better & fairer place, and talking with interesting people.
 
-Every writing is **100%** me, not AI.
+Writing is **100%** me, not AI.
 
-**Last Updated: 2026-07-09**
+**Last Updated: 2026-07-10**
 
 ## TIME LINE FOR CONTEXT
 
@@ -22,13 +22,15 @@ Every writing is **100%** me, not AI.
 - 2023 to 2025: moved to New York City to earn my master degree at Cornell Tech in Information Systems
 - 2025: moved to Tampa, FL after getting a job that allows me to work fully remote, living my best life
 
-#I'M AMBITIOUSLY FOCUSED ON CREATING
+
+
+## I'M AMBITIOUSLY FOCUSED ON CREATING
 
 To me, writing is a way of expressing myself, aka creating. I started writing diaires since primary school. A good way to let my creativity out.
 
 I chose tech focused major for my bachelor & master degree because I feel like machine language are more universal in a sense, an APP update can affect millions of people easily. By combining my love for literature with my computer science knowledge, I can reach a broader audience, essentially getting more feedback, help me better understand the world.
 
-And by understanding that, I can make people's lives easier by simplifying some of the daily processes. I also write articles in Chinese on [Xiaohongshu]([https://www.xiaohongshu.com/user/profile/629cf576000000001b024f44](https://www.xiaohongshu.com/user/profile/629cf576000000001b024f44)) on how to stop self-sabotaging, accepting you as who you are & start loving yourself. I have all the love in the world & I'm happy to share it.
+And by understanding that, I can make people's lives easier by simplifying some of the daily processes. I also write articles in Chinese on [Xiaohongshu](https://www.xiaohongshu.com/user/profile/629cf576000000001b024f44) on how to stop self-sabotaging, accepting you as who you are & start loving yourself. I have all the love in the world & I'm happy to share it.
 
 Self expression is a *form of art* in my opinion, I wouldn't stop expressing, creating, loving, as long as I can.
 
@@ -43,8 +45,10 @@ Self expression is a *form of art* in my opinion, I wouldn't stop expressing, cr
 - Humans don't need much to survive on this planet, eat healthily, drink plenty of water, exercise regularly, having good relationships with people around you is the key to happiness. 
 - Use free time to explore your hobbies & do what you love. 
 - Money is a thing to help me **experience** different things, as long as it can support my lifestyle I'm fine.
-- There's no meaning to one's life, we're all put on this earth to **experience** stuff, might as well take what life gives you, accept it. Everything happens for the best. 
+- There's no meaning to one's life, we're all put on this earth to **experience** stuff, might as well take what life gives you, accept it. **Everything** happens for the best.
+
+
 
 ## Questions? Thoughts?
 
-No comments here. That would be too weird. This is too personal. Just [email me](mailto:[lucidreaminxx@gmail.com](mailto:lucidreaminxx@gmail.com)).
+No comments here. That would be too weird. This is too personal. Just [email me](mailto:lucidreaminxx@gmail.com).
