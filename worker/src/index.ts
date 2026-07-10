@@ -105,12 +105,14 @@ export default {
       return new Response(null, { status: 204, headers });
     }
 
-    if (env.ALLOWED_ORIGINS && !origin) {
-      return json({ error: "origin not allowed" }, 403);
+    if (url.pathname === "/" || url.pathname === "/health") {
+      return json({ ok: true, service: "cupofluci-comments" }, 200, origin ?? "*");
     }
 
-    if (url.pathname === "/" || url.pathname === "/health") {
-      return json({ ok: true, service: "cupofluci-comments" }, 200, origin);
+    // Browser calls send Origin; reject disallowed origins.
+    // Non-browser tools may omit Origin — allow those through.
+    if (env.ALLOWED_ORIGINS && request.headers.get("Origin") && !origin) {
+      return json({ error: "origin not allowed" }, 403);
     }
 
     if (url.pathname === "/entries" && request.method === "GET") {
