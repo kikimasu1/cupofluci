@@ -13,6 +13,8 @@ export const copy = {
   instagramUrl: "https://www.instagram.com/cupofluci/",
   xiaohongshuUrl:
     "https://www.xiaohongshu.com/user/profile/629cf576000000001b024f44",
+  spotifyUrl:
+    "https://open.spotify.com/user/31k7rquypcbzdi5iuteo3vval5mi",
   homeMe10s: "ME IN 10 SECONDS",
   homeTagline: "Curious human, writer, builder, and conversationalist.",
   homeTimeline: [
