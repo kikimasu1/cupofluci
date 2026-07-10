@@ -18,8 +18,8 @@ const { Content } = await render(post);
 
 <BaseLayout title={post.data.title} description={post.data.description ?? post.data.title}>
   <article class="prose">
-    <p class="muted">{formatDate(post.data.date)}</p>
     <h1>{post.data.title}</h1>
+    <p class="muted">{formatDate(post.data.date)}</p>
     <Content />
   </article>
 
