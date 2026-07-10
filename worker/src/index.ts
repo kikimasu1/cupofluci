@@ -10,11 +10,14 @@ type EntryRow = {
   name: string;
   comment: string;
   created_at: string;
+  post_slug?: string;
 };
 
 const MAX_NAME = 80;
 const MAX_EMAIL = 120;
 const MAX_COMMENT = 2000;
+const MAX_SLUG = 120;
+const SLUG_RE = /^[a-z0-9][a-z0-9._-]{0,119}$/i;
 
 function json(data: unknown, status = 200, origin?: string | null): Response {
   const headers = new Headers({
@@ -31,17 +34,13 @@ function applyCors(headers: Headers, origin?: string | null) {
     headers.set("Vary", "Origin");
   }
   headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  headers.set(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Accept",
-  );
+  headers.set("Access-Control-Allow-Headers", "Content-Type, Accept");
 }
 
 function allowedOrigin(request: Request, env: Env): string | null {
   const origin = request.headers.get("Origin");
   const raw = env.ALLOWED_ORIGINS?.trim();
   if (!raw) {
-    // Dev-friendly default when secret not set yet
     return origin ?? "*";
   }
   const list = raw.split(",").map((s) => s.trim()).filter(Boolean);
@@ -54,6 +53,14 @@ function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function cleanText(value: string, max: number): string {
+  return value.replace(/[\0\r\n]+/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
+}
+
+function cleanComment(value: string, max: number): string {
+  return value.replace(/\0/g, "").replace(/\r\n?/g, "\n").trim().slice(0, max);
+}
+
 async function hashIp(ip: string): Promise<string> {
   const data = new TextEncoder().encode(ip);
   const digest = await crypto.subtle.digest("SHA-256", data);
@@ -63,7 +70,10 @@ async function hashIp(ip: string): Promise<string> {
     .slice(0, 32);
 }
 
-async function notify(env: Env, entry: { name: string; email: string; comment: string }) {
+async function notify(
+  env: Env,
+  entry: { name: string; email: string; comment: string; post_slug: string },
+) {
   if (!env.RESEND_API_KEY || !env.NOTIFY_EMAIL) return;
 
   await fetch("https://api.resend.com/emails", {
@@ -73,14 +83,12 @@ async function notify(env: Env, entry: { name: string; email: string; comment: s
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "cupofluci guestbook <onboarding@resend.dev>",
+      from: "cupofluci comments <onboarding@resend.dev>",
       to: [env.NOTIFY_EMAIL],
-      subject: `Guestbook: ${entry.name}`,
-      text: `From: ${entry.name} <${entry.email}>\n\n${entry.comment}`,
+      subject: `Comment on ${entry.post_slug}: ${entry.name}`,
+      text: `Post: ${entry.post_slug}\nFrom: ${entry.name} <${entry.email}>\n\n${entry.comment}`,
     }),
-  }).catch(() => {
-    // Notification failure should not fail the public write.
-  });
+  }).catch(() => {});
 }
 
 export default {
@@ -102,16 +110,24 @@ export default {
     }
 
     if (url.pathname === "/" || url.pathname === "/health") {
-      return json({ ok: true, service: "cupofluci-guestbook" }, 200, origin);
+      return json({ ok: true, service: "cupofluci-comments" }, 200, origin);
     }
 
     if (url.pathname === "/entries" && request.method === "GET") {
+      const postSlug = String(url.searchParams.get("post") ?? "").trim();
+      if (!postSlug || !SLUG_RE.test(postSlug)) {
+        return json({ error: "invalid post" }, 400, origin);
+      }
+
       const { results } = await env.DB.prepare(
         `SELECT id, name, comment, created_at
          FROM entries
-         ORDER BY datetime(created_at) DESC, id DESC
-         LIMIT 100`,
-      ).all<EntryRow>();
+         WHERE post_slug = ?
+         ORDER BY datetime(created_at) ASC, id ASC
+         LIMIT 200`,
+      )
+        .bind(postSlug.slice(0, MAX_SLUG))
+        .all<EntryRow>();
 
       // Intentionally omit email from public responses.
       return json({ entries: results ?? [] }, 200, origin);
@@ -130,15 +146,16 @@ export default {
         return json({ ok: true }, 201, origin);
       }
 
-      const name = String(body.name ?? "").trim();
-      const email = String(body.email ?? "").trim().toLowerCase();
-      const comment = String(body.comment ?? "").trim();
+      const postSlug = cleanText(String(body.post_slug ?? ""), MAX_SLUG);
+      const name = cleanText(String(body.name ?? ""), MAX_NAME);
+      const email = cleanText(String(body.email ?? ""), MAX_EMAIL).toLowerCase();
+      const comment = cleanComment(String(body.comment ?? ""), MAX_COMMENT);
 
+      if (!postSlug || !SLUG_RE.test(postSlug)) {
+        return json({ error: "invalid post" }, 400, origin);
+      }
       if (!name || !email || !comment) {
         return json({ error: "missing fields" }, 400, origin);
-      }
-      if (name.length > MAX_NAME || email.length > MAX_EMAIL || comment.length > MAX_COMMENT) {
-        return json({ error: "too long" }, 400, origin);
       }
       if (!isEmail(email)) {
         return json({ error: "invalid email" }, 400, origin);
@@ -150,13 +167,14 @@ export default {
         "unknown";
       const ipHash = await hashIp(ip);
 
-      // Simple rate limit: same IP hash within 60s
       const recent = await env.DB.prepare(
         `SELECT id FROM entries
-         WHERE ip_hash = ? AND created_at >= strftime('%Y-%m-%dT%H:%M:%SZ', 'now', '-60 seconds')
+         WHERE ip_hash = ?
+           AND post_slug = ?
+           AND created_at >= strftime('%Y-%m-%dT%H:%M:%SZ', 'now', '-60 seconds')
          LIMIT 1`,
       )
-        .bind(ipHash)
+        .bind(ipHash, postSlug)
         .first();
 
       if (recent) {
@@ -164,14 +182,14 @@ export default {
       }
 
       const result = await env.DB.prepare(
-        `INSERT INTO entries (name, email, comment, ip_hash)
-         VALUES (?, ?, ?, ?)
+        `INSERT INTO entries (post_slug, name, email, comment, ip_hash)
+         VALUES (?, ?, ?, ?, ?)
          RETURNING id, name, comment, created_at`,
       )
-        .bind(name, email, comment, ipHash)
+        .bind(postSlug, name, email, comment, ipHash)
         .first<EntryRow>();
 
-      await notify(env, { name, email, comment });
+      await notify(env, { name, email, comment, post_slug: postSlug });
 
       return json({ entry: result }, 201, origin);
     }

@@ -1,12 +1,12 @@
-# Guestbook API (Cloudflare Worker + D1)
+# Comments API (Cloudflare Worker + D1)
 
-Free backend for the mixed-language guestbook.
+Per-article comments for cupofluci.
 
 - Visitors submit **name + email + comment** (no login)
-- Public list returns **name + comment only** (email never exposed)
-- Chinese and English messages share one feed
+- Public list returns **name + comment + date only** (email never exposed)
+- Emails stay in D1 (and optional notify email to you)
 
-## 1. Create D1 database
+## 1. Login + create D1
 
 ```bash
 cd worker
@@ -20,27 +20,36 @@ Copy the `database_id` into `wrangler.toml`.
 
 ```bash
 npx wrangler d1 execute cupofluci-guestbook --remote --file=./schema.sql
-# local/dev:
 npx wrangler d1 execute cupofluci-guestbook --local --file=./schema.sql
 ```
 
-## 3. Set secrets (optional email notify)
-
-```bash
-# comma-separated origins allowed to call the API
-npx wrangler secret put ALLOWED_ORIGINS
-# example value: https://cupofluci.pages.dev,http://localhost:4321
-
-# optional: get an email when someone writes
-npx wrangler secret put NOTIFY_EMAIL
-npx wrangler secret put RESEND_API_KEY
-```
-
-If you skip Resend, entries still save — you just won’t get email alerts. Read emails later with:
+If the table already exists without `post_slug`, run:
 
 ```bash
 npx wrangler d1 execute cupofluci-guestbook --remote \
-  --command="SELECT id, name, email, created_at FROM entries ORDER BY id DESC LIMIT 20"
+  --command="ALTER TABLE entries ADD COLUMN post_slug TEXT NOT NULL DEFAULT '';"
+```
+
+## 3. Secrets
+
+```bash
+# allow your live site + local preview
+npx wrangler secret put ALLOWED_ORIGINS
+# example:
+# https://cupofluci.com,https://www.cupofluci.com,https://kikimasu1.github.io,http://localhost:4321
+
+# optional: email you when someone comments
+npx wrangler secret put NOTIFY_EMAIL
+# lucidreaminxx@gmail.com
+
+npx wrangler secret put RESEND_API_KEY
+```
+
+Without Resend, comments still save. Read private emails with:
+
+```bash
+npx wrangler d1 execute cupofluci-guestbook --remote \
+  --command="SELECT id, post_slug, name, email, created_at FROM entries ORDER BY id DESC LIMIT 20"
 ```
 
 ## 4. Deploy worker
@@ -49,20 +58,26 @@ npx wrangler d1 execute cupofluci-guestbook --remote \
 npx wrangler deploy
 ```
 
-Note the worker URL, e.g. `https://cupofluci-guestbook.<you>.workers.dev`
+Copy the worker URL, e.g. `https://cupofluci-guestbook.<you>.workers.dev`
 
 ## 5. Point the Astro site at it
 
-In Cloudflare Pages → Settings → Environment variables:
+GitHub repo → **Settings → Secrets and variables → Actions → Variables**:
 
 ```
-PUBLIC_GUESTBOOK_API=https://cupofluci-guestbook.<you>.workers.dev
+PUBLIC_COMMENTS_API=https://cupofluci-guestbook.<you>.workers.dev
 ```
 
-Or locally, create `.env`:
+Then re-run the Pages deploy workflow (or push a commit).
+
+Locally:
 
 ```
-PUBLIC_GUESTBOOK_API=http://127.0.0.1:8787
+PUBLIC_COMMENTS_API=http://127.0.0.1:8787
 ```
 
-Then run the worker with `npx wrangler dev` and the site with `npm run dev`.
+```bash
+cd worker && npm run dev
+# other terminal
+cd .. && npm run dev
+```

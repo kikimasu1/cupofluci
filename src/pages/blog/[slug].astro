@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Comments from "../../components/Comments.astro";
 import { getCollection, render } from "astro:content";
 import { formatDate } from "../../lib/posts";
 
@@ -21,4 +22,6 @@ const { Content } = await render(post);
     <h1>{post.data.title}</h1>
     <Content />
   </article>
+
+  <Comments postSlug={post.id} />
 </BaseLayout>

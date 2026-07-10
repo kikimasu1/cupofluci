@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS entries (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  post_slug TEXT NOT NULL DEFAULT '',
   name TEXT NOT NULL,
   email TEXT NOT NULL,
   comment TEXT NOT NULL,
@@ -8,3 +9,4 @@ CREATE TABLE IF NOT EXISTS entries (
 );
 
 CREATE INDEX IF NOT EXISTS idx_entries_created_at ON entries(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_entries_post_slug ON entries(post_slug);

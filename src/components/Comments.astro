@@ -1,0 +1,246 @@
+---
+interface Props {
+  postSlug: string;
+  apiUrl?: string;
+}
+
+const apiUrl =
+  Astro.props.apiUrl ??
+  import.meta.env.PUBLIC_COMMENTS_API ??
+  import.meta.env.PUBLIC_GUESTBOOK_API ??
+  "";
+const { postSlug } = Astro.props;
+---
+
+<section
+  class="comments"
+  id="comments"
+  data-api={apiUrl}
+  data-post={postSlug}
+>
+  <div class="comments-inner">
+    <h2 class="comments-heading">COMMENTS</h2>
+    <ol class="comment-list" id="comment-list"></ol>
+    <p class="comments-empty muted" id="comments-empty">No comments yet.</p>
+
+    <div class="comment-form-block">
+      <h2 class="comments-prompt">YOUR THOUGHTS?</h2>
+      <p class="comments-prompt-sub">PLEASE LEAVE A REPLY:</p>
+
+      <form id="comment-form" novalidate>
+        <div class="field">
+          <label for="comment-name">Your Name:</label>
+          <input
+            id="comment-name"
+            name="name"
+            type="text"
+            required
+            maxlength="80"
+            autocomplete="name"
+          />
+        </div>
+
+        <div class="field">
+          <label for="comment-email"
+            >Your Email (private for my eyes only):</label
+          >
+          <input
+            id="comment-email"
+            name="email"
+            type="email"
+            required
+            maxlength="120"
+            autocomplete="email"
+          />
+        </div>
+
+        <div class="field hp" aria-hidden="true">
+          <label for="comment-company">Company</label>
+          <input
+            id="comment-company"
+            name="company"
+            type="text"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="field">
+          <label for="comment-body">Comment:</label>
+          <textarea
+            id="comment-body"
+            name="comment"
+            required
+            maxlength="2000"
+            rows="6"></textarea>
+        </div>
+
+        <button type="submit">post comment</button>
+        <p class="status" id="comment-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  type Entry = {
+    id: number | string;
+    name: string;
+    comment: string;
+    created_at: string;
+  };
+
+  const root = document.getElementById("comments");
+  const form = document.getElementById("comment-form") as HTMLFormElement | null;
+  const listEl = document.getElementById("comment-list");
+  const emptyEl = document.getElementById("comments-empty");
+  const statusEl = document.getElementById("comment-status");
+  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+  const api = root?.dataset.api?.trim() ?? "";
+  const postSlug = root?.dataset.post?.trim() ?? "";
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let lastSubmitAt = 0;
+
+  function setStatus(text: string) {
+    if (statusEl) statusEl.textContent = text;
+  }
+
+  function formatWhen(iso: string): string {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return iso.slice(0, 10);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function renderEntries(entries: Entry[]) {
+    if (!listEl || !emptyEl) return;
+    listEl.replaceChildren();
+
+    if (!entries.length) {
+      emptyEl.hidden = false;
+      emptyEl.textContent = "No comments yet.";
+      return;
+    }
+
+    emptyEl.hidden = true;
+    entries.forEach((entry, index) => {
+      const li = document.createElement("li");
+      li.className = "comment-item";
+
+      const meta = document.createElement("div");
+      meta.className = "comment-meta";
+
+      const num = document.createElement("span");
+      num.className = "comment-num";
+      num.textContent = `${index + 1}. `;
+
+      const name = document.createElement("strong");
+      name.className = "comment-name";
+      name.textContent = entry.name;
+
+      const date = document.createElement("span");
+      date.className = "comment-date";
+      date.textContent = ` (${formatWhen(entry.created_at)})`;
+
+      meta.append(num, name, date);
+
+      const body = document.createElement("p");
+      body.className = "comment-body";
+      body.textContent = entry.comment;
+
+      li.append(meta, body);
+      listEl.append(li);
+    });
+  }
+
+  async function loadEntries() {
+    if (!listEl || !emptyEl) return;
+
+    if (!api || !postSlug) {
+      emptyEl.hidden = false;
+      emptyEl.textContent =
+        "Comments API is not configured yet. Set PUBLIC_COMMENTS_API after deploying the Worker.";
+      return;
+    }
+
+    emptyEl.hidden = false;
+    emptyEl.textContent = "Loading comments…";
+
+    try {
+      const res = await fetch(
+        `${api.replace(/\/$/, "")}/entries?post=${encodeURIComponent(postSlug)}`,
+      );
+      if (!res.ok) throw new Error("bad status");
+      const data = (await res.json()) as { entries?: Entry[] };
+      renderEntries(data.entries ?? []);
+    } catch {
+      emptyEl.hidden = false;
+      emptyEl.textContent = "Could not load comments.";
+    }
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!form || !submitBtn) return;
+
+    if (!api || !postSlug) {
+      setStatus("Comments API is not configured yet.");
+      return;
+    }
+
+    const now = Date.now();
+    if (now - lastSubmitAt < 8000) {
+      setStatus("Please wait a few seconds before trying again.");
+      return;
+    }
+
+    const fd = new FormData(form);
+    if (String(fd.get("company") ?? "").trim()) {
+      setStatus("Thanks — comment posted.");
+      form.reset();
+      return;
+    }
+
+    const name = String(fd.get("name") ?? "").replace(/[\r\n\0]/g, " ").trim();
+    const email = String(fd.get("email") ?? "").replace(/[\r\n\0]/g, " ").trim().toLowerCase();
+    const comment = String(fd.get("comment") ?? "").replace(/\0/g, "").trim();
+
+    if (!name || !email || !comment) {
+      setStatus("Please fill in every field.");
+      form.reportValidity();
+      return;
+    }
+    if (!EMAIL_RE.test(email)) {
+      setStatus("Please enter a valid email.");
+      return;
+    }
+
+    lastSubmitAt = now;
+    submitBtn.disabled = true;
+    setStatus("Posting…");
+
+    try {
+      const res = await fetch(`${api.replace(/\/$/, "")}/entries`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          post_slug: postSlug,
+          name,
+          email,
+          comment,
+          company: "",
+        }),
+      });
+      if (!res.ok) throw new Error("bad status");
+      form.reset();
+      setStatus("Thanks — comment posted.");
+      await loadEntries();
+    } catch {
+      setStatus("Something went wrong. Please try again.");
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  loadEntries();
+</script>

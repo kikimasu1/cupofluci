@@ -299,3 +299,149 @@ p {
   margin-top: 0.85rem;
   min-height: 1.4em;
 }
+
+/* Blog comments */
+.comments {
+  margin-top: 3rem;
+  margin-inline: calc(50% - 50vw);
+  width: 100vw;
+  background: #000;
+  color: #fff;
+  padding: 2rem 0 2.75rem;
+  border-top: 1px solid #222;
+}
+
+.comments-inner {
+  width: min(100% - 2rem, var(--max));
+  margin-inline: auto;
+}
+
+.comments-heading,
+.comments-prompt,
+.comments-prompt-sub {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.comments-heading {
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.comments-prompt {
+  font-size: 1.35rem;
+  margin-top: 2rem;
+}
+
+.comments-prompt-sub {
+  font-size: 1.35rem;
+  margin: 0.15rem 0 1.5rem;
+}
+
+.comment-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.comment-item {
+  margin: 0 0 1.35rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #222;
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-meta {
+  margin-bottom: 0.35rem;
+}
+
+.comment-name {
+  font-style: italic;
+}
+
+.comment-date {
+  color: #aaa;
+}
+
+.comment-body {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.comments-empty {
+  margin: 0 0 0.5rem;
+}
+
+.comment-form-block .field {
+  margin-bottom: 1.25rem;
+}
+
+.comment-form-block label {
+  display: block;
+  margin: 0 0 0.4rem;
+}
+
+.comment-form-block input,
+.comment-form-block textarea {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  background: #fff;
+  color: #111;
+  font: inherit;
+  padding: 0.55rem 0.65rem;
+}
+
+.comment-form-block textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.comment-form-block input:focus,
+.comment-form-block textarea:focus {
+  outline: 2px solid #888;
+  outline-offset: 2px;
+}
+
+.comment-form-block .hp {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.comment-form-block button[type="submit"] {
+  display: block;
+  width: 100%;
+  font: inherit;
+  font-size: 1.05rem;
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 0;
+  background: #d8d8d8;
+  color: #111;
+  cursor: pointer;
+}
+
+.comment-form-block button[type="submit"]:hover {
+  opacity: 0.92;
+}
+
+.comment-form-block button[type="submit"]:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.comment-form-block .status {
+  margin-top: 0.85rem;
+  min-height: 1.4em;
+  color: #ccc;
+}

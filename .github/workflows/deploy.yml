@@ -24,7 +24,10 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - name: Build
+        env:
+          PUBLIC_COMMENTS_API: ${{ vars.PUBLIC_COMMENTS_API }}
+        run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
