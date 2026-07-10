@@ -5,10 +5,30 @@ import { copy } from "../../i18n/ui";
 import { path } from "../../lib/path";
 
 const posts = (await getPosts()).filter((p) => !p.data.draft);
+const count = posts.length;
 ---
 
-<BaseLayout title="Blog" description="Articles from cupofluci.">
-  <h1>{copy.blogTitle}</h1>
+<BaseLayout title="Articles" description="Articles from cupofluci.">
+  <h1 class="search-heading">{copy.blogTitle}</h1>
+
+  <form class="search-form" role="search" action={path("/search")} method="get">
+    <label class="visually-hidden" for="blog-q">Search</label>
+    <input
+      id="blog-q"
+      name="q"
+      type="search"
+      maxlength="80"
+      autocomplete="off"
+      spellcheck="false"
+      enterkeyhint="search"
+    />
+    <button type="submit">{copy.searchButton}</button>
+  </form>
+
+  <h2 class="articles-meta">
+    ALL ({count}) ARTICLES, NEW TO OLD
+  </h2>
+
   {
     posts.length ? (
       <ul class="list">

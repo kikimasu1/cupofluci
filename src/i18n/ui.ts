@@ -65,8 +65,9 @@ export const copy = {
     "Building this personal site.",
     "Selling my stuff in Tampa",
   ],
-  blogTitle: "Blog",
+  blogTitle: "ARTICLES",
   blogEmpty: "No posts yet.",
+  blogAllMeta: "ALL ({count}) ARTICLES, NEW TO OLD",
 } as const;
 
 export type CopyKey = keyof typeof copy;
