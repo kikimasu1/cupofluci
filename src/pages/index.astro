@@ -10,7 +10,14 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
 <BaseLayout title="cupofluci" description="A small personal site by Luci.">
   <h2>{copy.homeMe10s}</h2>
   <p>{copy.homeTagline}</p>
-  {copy.homeTimeline.map((line) => <p>{line}</p>)}
+  {
+    copy.homeTimeline.map((item) => (
+      <p class="timeline-item">
+        <span class="timeline-year">{item.year}</span>
+        {` ${item.text}`}
+      </p>
+    ))
+  }
 
   <h2>
     <a href={path("/about")}>{copy.homeMe10m}</a>?

@@ -1,3 +1,8 @@
+export type TimelineItem = {
+  year: string;
+  text: string;
+};
+
 export const copy = {
   brand: "cupofluci",
   navHome: "home",
@@ -11,10 +16,19 @@ export const copy = {
   homeMe10s: "ME IN 10 SECONDS",
   homeTagline: "Curious human, writer, builder, and conversationalist.",
   homeTimeline: [
-    "(2019-2025): Student. Learning by making things, breaking things, and writing it down.",
-    "(2025-2026): Builder. Shipping small projects, reading widely, talking to people.",
-    "(2026-): ?",
-  ],
+    {
+      year: "(2019-2025)",
+      text: "Student. Learning by making things, breaking things, and writing it down.",
+    },
+    {
+      year: "(2025-2026)",
+      text: "Builder. Shipping small projects, reading widely, talking to people.",
+    },
+    {
+      year: "(2026-)",
+      text: "?",
+    },
+  ] satisfies TimelineItem[],
   homeMe10m: "ME IN 10 MINUTES",
   homeNowBlurb: "WHAT AM I DOING NOW",
   homeContact: "CONTACT ME",
@@ -22,6 +36,12 @@ export const copy = {
   homeNewestPrefix: "NEWEST ",
   homeNewestArticles: "ARTICLES",
   homeMore: "… and more here.",
+  searchTitle: "SEARCH",
+  searchButton: "search",
+  searchPlaceholder: "",
+  searchEmpty: "No matching articles.",
+  searchHint: "Type a keyword to find articles.",
+  searchInvalid: "Use letters, numbers, and simple punctuation only.",
   contactTitle: "contact me",
   contactLead: "I reply to every email, and I enjoy it.",
   contactSubmit: "email me",
