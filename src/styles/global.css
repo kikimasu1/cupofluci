@@ -58,12 +58,13 @@ img {
 
 .brand {
   color: var(--link);
+  font-family: var(--font);
   font-size: 1.55rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   line-height: 1.15;
   text-decoration: underline;
-  text-transform: uppercase;
+  text-transform: none;
   text-underline-offset: 0.14em;
 }
 
