@@ -5,4 +5,4 @@ compatibility_date = "2026-07-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "cupofluci-guestbook"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "04228f6a-2362-4ea1-bf15-b0902d4a25bf"
