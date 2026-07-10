@@ -1,6 +1,6 @@
 # cupofluci
 
-Personal site in the spirit of [sive.rs](https://sive.rs/): plain pages, short writing, photos.
+Personal site in the spirit of [sive.rs](https://sive.rs/): plain pages, simple writing.
 
 ## Features
 
