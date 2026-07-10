@@ -15,7 +15,8 @@ npm run dev
 
 Open http://localhost:4321
 
-Edit homepage copy in `src/i18n/ui.ts` (timeline, contact email, about/now text).
+Edit homepage copy in `src/i18n/ui.ts` (timeline, contact email, now text).
+Edit the About page in `src/content/pages/about.md`.
 
 ## Write a post
 

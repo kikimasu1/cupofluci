@@ -52,13 +52,6 @@ export const copy = {
   contactNeedState: "Please choose your state.",
   contactBadEmail: "Please enter a valid email address.",
   contactSlowDown: "Please wait a few seconds before trying again.",
-  aboutTitle: "About",
-  aboutBody: [
-    "Hi — I’m Luci.",
-    "This site is my public notebook: short writing, what I’m doing now, and a place to say hello.",
-    "I care about clear thinking, making useful things, and talking with interesting people.",
-    "If you want the short version, go back home. If you want more, keep reading here and on /now.",
-  ],
   nowTitle: "Now",
   nowUpdated: "Updated",
   nowBody: [

@@ -1,11 +1,21 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { copy } from "../i18n/ui";
+import { getEntry, render } from "astro:content";
+
+const about = await getEntry("pages", "about");
+if (!about) {
+  throw new Error('Missing content: src/content/pages/about.md');
+}
+
+const { Content } = await render(about);
 ---
 
-<BaseLayout title="About" description="About Luci.">
-  <h1>{copy.aboutTitle}</h1>
-  <div class="prose">
-    {copy.aboutBody.map((p) => <p>{p}</p>)}
-  </div>
+<BaseLayout
+  title={about.data.title}
+  description={about.data.description ?? about.data.title}
+>
+  <article class="prose">
+    <h1>{about.data.title}</h1>
+    <Content />
+  </article>
 </BaseLayout>
