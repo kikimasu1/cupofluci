@@ -13,14 +13,14 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
   {copy.homeTimeline.map((line) => <p>{line}</p>)}
 
   <h2>
-    <a href={path("/about")}>{copy.homeMe10m}</a>
+    <a href={path("/about")}>{copy.homeMe10m}</a>?
   </h2>
   <p>
     See my <a href={path("/about")}>/about</a> page.
   </p>
 
   <h2>
-    <a href={path("/now")}>{copy.homeNowBlurb}</a>
+    <a href={path("/now")}>{copy.homeNowBlurb}</a>?
   </h2>
   <p>
     See my <a href={path("/now")}>/now</a> page.
