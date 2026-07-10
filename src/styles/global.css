@@ -26,8 +26,6 @@ body {
   font-family: var(--font);
   font-weight: 400;
   line-height: 1.75;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -216,6 +214,14 @@ p {
 
 .prose :where(ul, ol) {
   padding-left: 1.25rem;
+}
+
+.prose :where(li) {
+  margin-bottom: 0.85rem;
+}
+
+.prose :where(li:last-child) {
+  margin-bottom: 0;
 }
 
 .prose img {
