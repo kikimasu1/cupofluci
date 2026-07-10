@@ -16,15 +16,15 @@ export const copy = {
   spotifyUrl:
     "https://open.spotify.com/user/31k7rquypcbzdi5iuteo3vval5mi",
   homeMe10s: "ME IN 10 SECONDS",
-  homeTagline: "Curious human, writer, builder, and conversationalist.",
+  homeTagline: "Curious human, writer, builder, and existentialist.",
   homeTimeline: [
     {
-      year: "(2019-2025)",
-      text: "Student. Learning by making things, breaking things, and writing it down.",
+      year: "(2016-2024)",
+      text: "Adulting. Learning by making things, breaking hearts, feeling kinda lost, pretty much a kid.",
     },
     {
-      year: "(2025-2026)",
-      text: "Builder. Shipping small projects, reading widely, talking to people.",
+      year: "(2024-2026)",
+      text: "Healing. Taking responsibilities, reading widely, talking to people, forgiving myself, loving others.",
     },
     {
       year: "(2026-)",
