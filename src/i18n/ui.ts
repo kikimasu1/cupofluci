@@ -20,11 +20,11 @@ export const copy = {
   homeTimeline: [
     {
       year: "(2016-2024)",
-      text: "Adulting. Learning by making things, breaking hearts, feeling kinda lost, pretty much a kid.",
+      text: "Adulting. Learning by making mistakes, breaking hearts, feeling kinda lost.",
     },
     {
       year: "(2024-2026)",
-      text: "Healing. Taking responsibilities, reading widely, talking to people, forgiving myself, loving others.",
+      text: "Growing. Taking responsibilities, talking to people, accepting myself.",
     },
     {
       year: "(2026-)",
