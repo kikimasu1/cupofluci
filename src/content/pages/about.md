@@ -51,4 +51,4 @@ Self expression is a *form of art* in my opinion, I wouldn't stop expressing, cr
 
 ## Questions? Thoughts?
 
-No comments here. That would be too weird. This is too personal. Just [email me](mailto:lucidreaminxx@gmail.com).
+No comments here. That would be too weird. This is too personal. Just [email me](/contact).
