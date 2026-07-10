@@ -36,7 +36,9 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
     <a href={path("/contact")}>say hello</a>.
   </p>
 
-  <h2>{copy.homeNewest}</h2>
+  <h2>
+    {copy.homeNewestPrefix}<a href={path("/blog")}>{copy.homeNewestArticles}</a>
+  </h2>
   {
     posts.length ? (
       <ul class="list">
@@ -58,6 +60,11 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
     <p>
       <a href={copy.instagramUrl} target="_blank" rel="noopener noreferrer"
         >Instagram</a
+      >
+    </p>
+    <p>
+      <a href={copy.xiaohongshuUrl} target="_blank" rel="noopener noreferrer"
+        >Xiaohongshu</a
       >
     </p>
   </section>
