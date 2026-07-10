@@ -64,7 +64,7 @@ export const copy = {
   nowBody: [
     "Building personal site.",
     "Selling my stuff in Tampa.",
-    "Doing apartment hunting in Tokyo.",
+    "Doing apartment hunting for Tokyo.",
   ],
   blogTitle: "ARTICLES",
   blogEmpty: "No posts yet.",
