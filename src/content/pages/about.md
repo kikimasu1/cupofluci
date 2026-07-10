@@ -17,7 +17,7 @@ Writing is **100%** me, not AI.
 
 - 2001: born in Nancheng, Jiangxi
 - 2001: moved to Suzhou, Jiangsu 
-- 2001 to 2021: accepted education in Suzhou, finished 2 years of bachelor study in Information and Computing Science at XJTLU, interned at a mid-size tech consulting company
+- 2001 to 2021: accepted education in Suzhou, finished 2 years of bachelor study in Information and Computing Science at XJTLU, interned at a tech consulting company
 - 2021 to 2023: moved to Liverpool, England to get a bachelor's degree in Computer Science at University of Liverpool, joined LGBTQ+ society, had fun exploring UK & Europe, interned at a Liverpool startup & worked remotely for a healthcare company
 - 2023 to 2025: moved to New York City to earn my master degree at Cornell Tech in Information Systems
 - 2025: moved to Tampa, FL after getting a job that allows me to work fully remote, living my best life
@@ -30,7 +30,7 @@ To me, writing is a way of expressing myself, aka creating. I started writing di
 
 I chose tech focused major for my bachelor & master degree because I feel like machine language are more universal in a sense, an APP update can affect millions of people easily. By combining my love for literature with my computer science knowledge, I can reach a broader audience, essentially getting more feedback, help me better understand the world.
 
-And by understanding that, I can make people's lives easier by simplifying some of the daily processes. I also write articles in Chinese on [Xiaohongshu](https://www.xiaohongshu.com/user/profile/629cf576000000001b024f44) on how to stop self-sabotaging, accepting you as who you are & start loving yourself. I have all the love in the world & I'm happy to share it.
+By this, I can make people's lives easier. I also write articles in Chinese on [Xiaohongshu](https://www.xiaohongshu.com/user/profile/629cf576000000001b024f44) on how to stop self-sabotaging, accepting you as who you are & start loving yourself. I have all the love in the world & I'm happy to share it.
 
 Self expression is a *form of art* in my opinion, I wouldn't stop expressing, creating, loving, as long as I can.
 
@@ -38,7 +38,7 @@ Self expression is a *form of art* in my opinion, I wouldn't stop expressing, cr
 
 - Be authentic. Follow your heart. 
 - Everybody's gonna die one day, and that's for a fact, might as well live the most of your life.
-- No need to hate or be jealous of anyone. Spirtually speaking, every one you meet is you in different reincarnation. Be kind to others is being kind to your future & past self.
+- No need to hate or [be jealous](/blog/no-jello) of anyone. Spirtually speaking, every one you meet is you in different reincarnation. Be kind to others is being kind to your future & past self.
 - Don't judge. People make decisions based on their previous lives, I don't know their life 100%, who am I to judge. I respect them & the decisions they made, if it's not something I want/ agree with, I'll leave. Also by **not** judging others, you'll feel less judged by others, too. Very liberating experience. 
 - What you give out you receive 10x in return, that's why I only speak positive stuff, giving out positive energy, being in **high** vibration/ frequency to connect with my **highest self.** I only give & receive positive energy.
 - I wish all the best for everyone, even if I disapprove of some of their decisions.
