@@ -16,6 +16,7 @@ export const copy = {
   spotifyUrl:
     "https://open.spotify.com/user/31k7rquypcbzdi5iuteo3vval5mi",
   homeMe10s: "ME IN 10 SECONDS",
+  homeAiDisclaimer: "(Writing is 100% done by me, not AI)",
   homeTagline: "Curious human, writer, builder, and existentialist.",
   homeTimeline: [
     {

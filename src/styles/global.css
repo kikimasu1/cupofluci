@@ -57,6 +57,11 @@ img {
   margin-bottom: 2rem;
 }
 
+.home-note {
+  margin: -0.75rem 0 1.5rem;
+  font-style: italic;
+}
+
 .brand {
   color: var(--link);
   font-family: var(--font);

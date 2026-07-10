@@ -8,6 +8,7 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
 ---
 
 <BaseLayout title="cupofluci" description="A small personal site by Luci.">
+  <p class="home-note"><em>{copy.homeAiDisclaimer}</em></p>
   <h2>{copy.homeMe10s}</h2>
   <p>{copy.homeTagline}</p>
   {
