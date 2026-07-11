@@ -8,7 +8,7 @@ export const copy = {
   navHome: "home",
   navAbout: "about",
   navNow: "now",
-  navBlog: "blog",
+  navBlog: "article",
   footerOther: "OTHER PLATFORMS",
   instagramUrl: "https://www.instagram.com/cupofluci/",
   xiaohongshuUrl:
