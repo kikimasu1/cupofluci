@@ -36,7 +36,7 @@ Self expression is a *form of art* in my opinion, I wouldn't stop expressing, cr
 
 ## MY LIFE PHILOSOPHY
 
-- Be authentic. Follow your heart. 
+- Be authentic. [Follow your heart](/article/life).
 - Everybody's gonna die one day, and that's for a fact, might as well live the most of your life.
 - No need to hate or [be jealous](/article/no-jello) of anyone. Spirtually speaking, every one you meet is you in different reincarnation. Be kind to others is being kind to your future & past self.
 - [Don't judge](/article/judg). People make decisions based on their previous lives, I don't know their life 100%, who am I to judge. Also by **not** judging, you'll feel less judged by others, too. Very liberating experience. 
