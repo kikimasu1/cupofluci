@@ -4,7 +4,7 @@ description: ""
 date: 2026-07-10T00:00:00.000Z
 ---
 
-I'm writing this article in memory of several deceased netizens, you're remembered.
+`I'm writing this article in memory of several deceased netizens, you're remembered.`
 
 ## Why compete?
 
@@ -16,7 +16,7 @@ They don't trust themselves, they can't live happily on their own, have to put t
 
 What's the prize towards the end though? I don't know.
 
-Who gets a good job / a good-looking partner / a pretty house / cars... etc, one can't take them away after death, what's the point then?
+Who gets good jobs / good-looking partners / pretty houses / cars... etc, one can't take them away after death, what's the point then?
 
 External goods can be compared, but what about feelings?
 
@@ -28,6 +28,8 @@ If one "lost", they might feel bad about themselves, jealous of others' success,
 
 ### Sounds like hell, no? The competition only stops when you die.
 
+
+
 People **kill** themselves because they feel *less than*.
 
 But life isn't a competition, there's no winner / loser.
@@ -38,10 +40,12 @@ Stop objectifying others, don't objectify yourself as well.
 
 You're **not** your job, you're **not** your partner, you're **not** your citizenship, you're **not** your friends.
 
+
+
 The meaning of life is **different** for everyone. You gotta find out by **yourself**.
 
-Following others' paths is easy, following the mainstream success, the **American Dream** is easy.
+Following others' paths is easy, following the mainstream success, the American Dream is easy.
 
 But staying true to yourself, listening to your inner voice, and being authentic takes hella courage.
 
-Do it.
+**Do it.**
