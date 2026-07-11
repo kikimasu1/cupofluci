@@ -35,7 +35,7 @@ const count = posts.length;
         {posts.map((post) => (
           <li>
             <span class="date">{formatDate(post.data.date)}</span>
-            <a href={path(`/blog/${post.id}`)}>{post.data.title}</a>
+            <a href={path(`/article/${post.id}`)}>{post.data.title}</a>
           </li>
         ))}
       </ul>

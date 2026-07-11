@@ -38,8 +38,8 @@ Self expression is a *form of art* in my opinion, I wouldn't stop expressing, cr
 
 - Be authentic. Follow your heart. 
 - Everybody's gonna die one day, and that's for a fact, might as well live the most of your life.
-- No need to hate or [be jealous](/blog/no-jello) of anyone. Spirtually speaking, every one you meet is you in different reincarnation. Be kind to others is being kind to your future & past self.
-- [Don't judge](/blog/judg). People make decisions based on their previous lives, I don't know their life 100%, who am I to judge. Also by **not** judging, you'll feel less judged by others, too. Very liberating experience. 
+- No need to hate or [be jealous](/article/no-jello) of anyone. Spirtually speaking, every one you meet is you in different reincarnation. Be kind to others is being kind to your future & past self.
+- [Don't judge](/article/judg). People make decisions based on their previous lives, I don't know their life 100%, who am I to judge. Also by **not** judging, you'll feel less judged by others, too. Very liberating experience. 
 - What you give out you receive 10x in return, that's why I only speak positive stuff, giving out positive energy, being in **high** vibration/ frequency to connect with my **highest self.** I only give & receive positive energy.
 - I wish all the best for everyone, even if I disapprove of some of their decisions.
 - Humans don't need much to survive on this planet, eat healthily, drink plenty of water, exercise regularly, having good relationships with people around you is the key to happiness. 

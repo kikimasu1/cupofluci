@@ -43,7 +43,7 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
   </p>
 
   <h2>
-    {copy.homeNewestPrefix}<a href={path("/blog")}>{copy.homeNewestArticles}</a>
+    {copy.homeNewestPrefix}<a href={path("/article")}>{copy.homeNewestArticles}</a>
   </h2>
   {
     posts.length ? (
@@ -51,7 +51,7 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
         {posts.map((post) => (
           <li>
             <span class="date">{formatDate(post.data.date)}</span>
-            <a href={path(`/blog/${post.id}`)}>{post.data.title}</a>
+            <a href={path(`/article/${post.id}`)}>{post.data.title}</a>
           </li>
         ))}
       </ul>
@@ -59,7 +59,7 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
       <p class="muted">{copy.blogEmpty}</p>
     )
   }
-  <p><a href={path("/blog")}>{copy.homeMore}</a></p>
+  <p><a href={path("/article")}>{copy.homeMore}</a></p>
 
   <section class="site-footer">
     <h2>{copy.footerOther}</h2>

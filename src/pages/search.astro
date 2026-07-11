@@ -15,7 +15,7 @@ const docs: SearchDoc[] = posts
     description: post.data.description ?? "",
     date: formatDate(post.data.date),
     body: typeof post.body === "string" ? post.body : "",
-    href: path(`/blog/${post.id}`),
+    href: path(`/article/${post.id}`),
   }))
   .sort((a, b) => b.date.localeCompare(a.date));
 ---
@@ -86,6 +86,11 @@ const docs: SearchDoc[] = posts
     headingEl.textContent = query ? `SEARCH FOR ${query}` : "SEARCH";
   }
 
+  function resultLabel(doc: Doc): string {
+    const path = new URL(doc.href, window.location.origin).pathname.replace(/\/$/, "");
+    return `${window.location.host}${path}`;
+  }
+
   function renderResults(results: Doc[], query: string) {
     if (!listEl) return;
     listEl.replaceChildren();
@@ -97,7 +102,7 @@ const docs: SearchDoc[] = posts
       const link = document.createElement("a");
       link.className = "search-result-link";
       link.href = doc.href;
-      link.textContent = doc.title;
+      link.textContent = resultLabel(doc);
       li.append(link);
 
       const snippet = extractSnippet(doc, query);
