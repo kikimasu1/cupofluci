@@ -1,11 +1,39 @@
 :root {
+  color-scheme: dark light;
   --bg: #111318;
   --text: #fff;
+  --body-text: #e6e6e6;
   --muted: #999;
   --link: #ccccff;
   --line: #333;
+  --icon: #fff;
+  --comments-bg: #000;
+  --comments-border: #222;
+  --comments-muted: #aaa;
+  --comments-status: #ccc;
+  --input-bg: #fff;
+  --input-text: #111;
+  --submit-bg: #fff;
+  --submit-text: #111;
+  --comment-submit-bg: #d8d8d8;
   --max: 40rem;
   --font: Georgia, "Times New Roman", Times, serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f4f1e8;
+    --text: #3a3a3a;
+    --body-text: #555;
+    --muted: #777;
+    --link: #5a5ad4;
+    --line: #d8d3c8;
+    --icon: #555;
+    --comments-bg: #ebe6da;
+    --comments-border: #d4cfc4;
+    --comments-muted: #888;
+    --comments-status: #666;
+  }
 }
 
 *,
@@ -22,7 +50,7 @@ html {
 body {
   margin: 0;
   background: var(--bg);
-  color: #e6e6e6;
+  color: var(--body-text);
   font-family: var(--font);
   font-weight: 400;
   line-height: 1.75;
@@ -82,7 +110,7 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--icon);
   text-decoration: none;
   line-height: 1;
 }
@@ -127,10 +155,10 @@ img {
 .search-form input[type="search"] {
   flex: 1;
   min-width: 0;
-  border: 1px solid #fff;
+  border: 1px solid var(--line);
   border-radius: 0;
-  background: #fff;
-  color: #111;
+  background: var(--input-bg);
+  color: var(--input-text);
   font: inherit;
   padding: 0.35rem 0.5rem;
 }
@@ -294,8 +322,8 @@ p {
   width: 100%;
   border: none;
   border-radius: 0;
-  background: #fff;
-  color: #111;
+  background: var(--input-bg);
+  color: var(--input-text);
   font: inherit;
   padding: 0.55rem 0.65rem;
 }
@@ -329,8 +357,8 @@ p {
   padding: 0.7rem 1rem;
   border: none;
   border-radius: 0;
-  background: #fff;
-  color: #111;
+  background: var(--submit-bg);
+  color: var(--submit-text);
   cursor: pointer;
 }
 
@@ -348,10 +376,10 @@ p {
   margin-top: 3rem;
   margin-inline: calc(50% - 50vw);
   width: 100vw;
-  background: #000;
-  color: #fff;
+  background: var(--comments-bg);
+  color: var(--body-text);
   padding: 2rem 0 2.75rem;
-  border-top: 1px solid #222;
+  border-top: 1px solid var(--comments-border);
 }
 
 .comments-inner {
@@ -392,7 +420,7 @@ p {
 .comment-item {
   margin: 0 0 1.35rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid var(--comments-border);
 }
 
 .comment-item:last-child {
@@ -408,7 +436,7 @@ p {
 }
 
 .comment-date {
-  color: #aaa;
+  color: var(--comments-muted);
 }
 
 .comment-body {
@@ -435,8 +463,8 @@ p {
   width: 100%;
   border: none;
   border-radius: 0;
-  background: #fff;
-  color: #111;
+  background: var(--input-bg);
+  color: var(--input-text);
   font: inherit;
   padding: 0.55rem 0.65rem;
 }
@@ -469,8 +497,8 @@ p {
   padding: 0.7rem 1rem;
   border: none;
   border-radius: 0;
-  background: #d8d8d8;
-  color: #111;
+  background: var(--comment-submit-bg);
+  color: var(--submit-text);
   cursor: pointer;
 }
 
@@ -486,5 +514,5 @@ p {
 .comment-form-block .status {
   margin-top: 0.85rem;
   min-height: 1.4em;
-  color: #ccc;
+  color: var(--comments-status);
 }
