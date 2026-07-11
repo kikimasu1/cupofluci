@@ -1,7 +1,7 @@
 ---
 title: Meaning of life / life isn't a competition
 description: ""
-date: 2026-07-10T00:00:00.000Z
+date: 2026-07-10T22:30:00.000Z
 ---
 
 `I'm writing this article in memory of several deceased netizens, you're remembered.`

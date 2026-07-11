@@ -1,7 +1,7 @@
 ---
 title: Being judgmental can be harmful
 description: "don't judge"
-date: 2026-07-10T00:00:00.000Z
+date: 2026-07-10T18:00:00.000Z
 ---
 
 I used to be very judgmental when I was younger, before I turned 23, to be exact. At that time, I just felt like people who couldn't make it in life were either weak/lazy or dumb, and I didn't want to be like them, that's part of the reason why I worked my ass off during high school. And I took pride in myself for being the mysterious brainiac in class, with a minimum amount of information exposure to others.

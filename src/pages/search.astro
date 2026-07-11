@@ -1,23 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
-import { formatDate } from "../lib/posts";
+import { formatDate, getPosts } from "../lib/posts";
 import { path } from "../lib/path";
 import { copy } from "../i18n/ui";
 import type { SearchDoc } from "../lib/search";
 
-const posts = await getCollection("blog", ({ data }) => !data.draft);
+const posts = (await getPosts()).filter((p) => !p.data.draft);
 
-const docs: SearchDoc[] = posts
-  .map((post) => ({
+const docs: SearchDoc[] = posts.map((post) => ({
     id: post.id,
     title: post.data.title,
     description: post.data.description ?? "",
     date: formatDate(post.data.date),
     body: typeof post.body === "string" ? post.body : "",
     href: path(`/article/${post.id}`),
-  }))
-  .sort((a, b) => b.date.localeCompare(a.date));
+  }));
 ---
 
 <BaseLayout title="Search" description="Search articles on cupofluci.">
