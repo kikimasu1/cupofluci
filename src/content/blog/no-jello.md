@@ -1,7 +1,7 @@
 ---
 title: No need for jealousy
 description: "no need for such thing at all "
-date: 2026-07-10T06:00:00.000Z
+date: 2026-07-09T06:00:00.000Z
 ---
 
 tldr: just live your best life every single day, then you wouldn't have that energy to be jealous of others lives.
