@@ -17,6 +17,11 @@ const MAX_NAME = 80;
 const MAX_EMAIL = 120;
 const MAX_COMMENT = 2000;
 const MAX_SLUG = 120;
+const MAX_COUNTRY = 80;
+const MAX_CITY = 80;
+const MAX_STATE = 40;
+const MAX_MESSAGE = 2000;
+const CONTACT_HUMAN = "luci";
 const SLUG_RE = /^[a-z0-9][a-z0-9._-]{0,119}$/i;
 
 function json(data: unknown, status = 200, origin?: string | null): Response {
@@ -70,7 +75,7 @@ async function hashIp(ip: string): Promise<string> {
     .slice(0, 32);
 }
 
-async function notify(
+async function notifyComment(
   env: Env,
   entry: { name: string; email: string; comment: string; post_slug: string },
 ) {
@@ -91,6 +96,42 @@ async function notify(
   }).catch(() => {});
 }
 
+async function notifyContact(
+  env: Env,
+  entry: {
+    name: string;
+    email: string;
+    country: string;
+    city: string;
+    state: string;
+    message: string;
+  },
+) {
+  if (!env.RESEND_API_KEY || !env.NOTIFY_EMAIL) return;
+
+  const location = [
+    entry.country,
+    entry.city,
+    entry.state ? entry.state : "",
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "cupofluci contact <onboarding@resend.dev>",
+      to: [env.NOTIFY_EMAIL],
+      subject: `Contact from ${entry.name}`,
+      text: `From: ${entry.name} <${entry.email}>\nLocation: ${location}\n\n${entry.message}`,
+    }),
+  }).catch(() => {});
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -106,7 +147,7 @@ export default {
     }
 
     if (url.pathname === "/" || url.pathname === "/health") {
-      return json({ ok: true, service: "cupofluci-comments" }, 200, origin ?? "*");
+      return json({ ok: true, service: "cupofluci-api" }, 200, origin ?? "*");
     }
 
     // Browser calls send Origin; reject disallowed origins.
@@ -191,9 +232,74 @@ export default {
         .bind(postSlug, name, email, comment, ipHash)
         .first<EntryRow>();
 
-      await notify(env, { name, email, comment, post_slug: postSlug });
+      await notifyComment(env, { name, email, comment, post_slug: postSlug });
 
       return json({ entry: result }, 201, origin);
+    }
+
+    if (url.pathname === "/contact" && request.method === "POST") {
+      let body: Record<string, unknown>;
+      try {
+        body = (await request.json()) as Record<string, unknown>;
+      } catch {
+        return json({ error: "invalid json" }, 400, origin);
+      }
+
+      if (typeof body.company === "string" && body.company.trim() !== "") {
+        return json({ ok: true }, 201, origin);
+      }
+
+      const name = cleanText(String(body.name ?? ""), MAX_NAME);
+      const email = cleanText(String(body.email ?? ""), MAX_EMAIL).toLowerCase();
+      const country = cleanText(String(body.country ?? ""), MAX_COUNTRY);
+      const city = cleanText(String(body.city ?? ""), MAX_CITY);
+      const state = cleanText(String(body.state ?? ""), MAX_STATE);
+      const message = cleanComment(String(body.message ?? ""), MAX_MESSAGE);
+      const human = cleanText(String(body.human ?? ""), 40).toLowerCase();
+
+      if (!name || !email || !country || !city || !message) {
+        return json({ error: "missing fields" }, 400, origin);
+      }
+      if (!isEmail(email)) {
+        return json({ error: "invalid email" }, 400, origin);
+      }
+      if (country === "U.S.A." && !state) {
+        return json({ error: "missing state" }, 400, origin);
+      }
+      if (human !== CONTACT_HUMAN) {
+        return json({ error: "human check failed" }, 400, origin);
+      }
+
+      const ip =
+        request.headers.get("CF-Connecting-IP") ||
+        request.headers.get("X-Forwarded-For")?.split(",")[0]?.trim() ||
+        "unknown";
+      const ipHash = await hashIp(ip);
+
+      const recent = await env.DB.prepare(
+        `SELECT id FROM contacts
+         WHERE ip_hash = ?
+           AND created_at >= strftime('%Y-%m-%dT%H:%M:%SZ', 'now', '-60 seconds')
+         LIMIT 1`,
+      )
+        .bind(ipHash)
+        .first();
+
+      if (recent) {
+        return json({ error: "too many requests" }, 429, origin);
+      }
+
+      const result = await env.DB.prepare(
+        `INSERT INTO contacts (name, email, country, city, state, message, ip_hash)
+         VALUES (?, ?, ?, ?, ?, ?, ?)
+         RETURNING id, name, email, country, city, state, created_at`,
+      )
+        .bind(name, email, country, city, state, message, ipHash)
+        .first();
+
+      await notifyContact(env, { name, email, country, city, state, message });
+
+      return json({ contact: result }, 201, origin);
     }
 
     return json({ error: "not found" }, 404, origin);

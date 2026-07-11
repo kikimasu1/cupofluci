@@ -3,7 +3,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { copy } from "../i18n/ui";
 import { countries, usStates } from "../data/places";
 
-const contactEmail = copy.homeContactEmail;
+const apiUrl =
+  import.meta.env.PUBLIC_COMMENTS_API ??
+  import.meta.env.PUBLIC_GUESTBOOK_API ??
+  "";
 ---
 
 <BaseLayout title="Contact" description="Contact Luci.">
@@ -18,7 +21,7 @@ const contactEmail = copy.homeContactEmail;
   <form
     class="contact-form"
     id="contact-form"
-    data-to={contactEmail}
+    data-api={apiUrl}
     data-human={copy.contactHumanAnswer}
   >
     <div class="field">
@@ -134,7 +137,7 @@ const contactEmail = copy.homeContactEmail;
   const statusEl = document.getElementById("contact-status");
   const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
 
-  const toEmail = form?.dataset.to?.trim() ?? "";
+  const api = form?.dataset.api?.trim() ?? "";
   const expectedHuman = (form?.dataset.human ?? "luci").trim().toLowerCase();
 
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -181,7 +184,7 @@ const contactEmail = copy.homeContactEmail;
   country?.addEventListener("change", syncState);
   syncState();
 
-  form?.addEventListener("submit", (event) => {
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!form || !submitBtn) return;
 
@@ -204,8 +207,8 @@ const contactEmail = copy.homeContactEmail;
       return;
     }
 
-    if (!toEmail || !EMAIL_RE.test(toEmail) || CONTROL_RE.test(toEmail)) {
-      setStatus("Contact email is misconfigured.");
+    if (!api) {
+      setStatus("Contact API is not configured yet.");
       return;
     }
 
@@ -239,7 +242,6 @@ const contactEmail = copy.homeContactEmail;
       return;
     }
 
-    // Extra length / injection guards for mailto headers
     if (
       CONTROL_RE.test(name) ||
       CONTROL_RE.test(countryVal) ||
@@ -253,28 +255,29 @@ const contactEmail = copy.homeContactEmail;
     lastSubmitAt = now;
     submitBtn.disabled = true;
 
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Country: ${countryVal}`,
-      `City: ${city}`,
-      stateVal ? `State: ${stateVal}` : "",
-      "",
-      message,
-    ]
-      .filter((line) => line !== "")
-      .join("\n");
-
-    const mailto =
-      `mailto:${toEmail}` +
-      `?subject=${encodeURIComponent(`Hello from ${name}`)}` +
-      `&body=${encodeURIComponent(body)}`;
-
-    window.location.href = mailto;
-    setStatus("Opening your email app…");
-
-    window.setTimeout(() => {
+    try {
+      const res = await fetch(`${api.replace(/\/$/, "")}/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          country: countryVal,
+          city,
+          state: stateVal,
+          message,
+          human,
+          company: "",
+        }),
+      });
+      if (!res.ok) throw new Error("bad status");
+      form.reset();
+      syncState();
+      setStatus("Thanks — message received. I'll reply by email.");
+    } catch {
+      setStatus("Something went wrong. Please try again.");
+    } finally {
       submitBtn.disabled = false;
-    }, 2000);
+    }
   });
 </script>

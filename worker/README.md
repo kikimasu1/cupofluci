@@ -1,10 +1,11 @@
-# Comments API (Cloudflare Worker + D1)
+# Comments + Contact API (Cloudflare Worker + D1)
 
-Per-article comments for cupofluci.
+Per-article comments and contact form storage for cupofluci.
 
-- Visitors submit **name + email + comment** (no login)
-- Public list returns **name + comment + date only** (email never exposed)
-- Emails stay in D1 (and optional notify email to you)
+- Comments: visitors submit **name + email + comment** (no login)
+- Contact: visitors submit **name + email + location + message**
+- Public comment list returns **name + comment + date only** (email never exposed)
+- Contact data stays private in D1 (optional notify email to you)
 
 ## 1. Login + create D1
 
@@ -45,11 +46,19 @@ npx wrangler secret put NOTIFY_EMAIL
 npx wrangler secret put RESEND_API_KEY
 ```
 
-Without Resend, comments still save. Read private emails with:
+Without Resend, submissions still save. Read private data with:
 
 ```bash
+# comments
 npx wrangler d1 execute cupofluci-guestbook --remote \
   --command="SELECT id, post_slug, name, email, created_at FROM entries ORDER BY id DESC LIMIT 20"
+
+# contact form — filter by country or city
+npx wrangler d1 execute cupofluci-guestbook --remote \
+  --command="SELECT id, name, email, country, city, state, created_at FROM contacts ORDER BY id DESC LIMIT 20"
+
+npx wrangler d1 execute cupofluci-guestbook --remote \
+  --command="SELECT name, email, city, state, created_at FROM contacts WHERE country = 'U.S.A.' AND state = 'Florida' ORDER BY created_at DESC"
 ```
 
 ## 4. Deploy worker
