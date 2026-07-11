@@ -86,11 +86,6 @@ const docs: SearchDoc[] = posts
     headingEl.textContent = query ? `SEARCH FOR ${query}` : "SEARCH";
   }
 
-  function resultLabel(doc: Doc): string {
-    const path = new URL(doc.href, window.location.origin).pathname.replace(/\/$/, "");
-    return `${window.location.host}${path}`;
-  }
-
   function renderResults(results: Doc[], query: string) {
     if (!listEl) return;
     listEl.replaceChildren();
@@ -102,7 +97,7 @@ const docs: SearchDoc[] = posts
       const link = document.createElement("a");
       link.className = "search-result-link";
       link.href = doc.href;
-      link.textContent = resultLabel(doc);
+      link.textContent = doc.title;
       li.append(link);
 
       const snippet = extractSnippet(doc, query);
