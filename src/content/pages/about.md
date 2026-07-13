@@ -5,7 +5,7 @@ description: Things about me that can keep you busy.
 
 Hi, I’m Luci.
 
-This is a place to post my writing, share my thoughts, and make friends. I love writing, might as well share them with the rest of the world :3
+This is a place to post my writing, share my thoughts, and make friends. I love writing, might as well share it with the rest of the world :3
 
 I care about ethics and integrity. I want to make this world a better/fairer place. I wanna be the kind of person people can come to for support and prespective. I believe everyone has good in them. It just takes time to see it. 
 
