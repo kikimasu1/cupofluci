@@ -9,7 +9,7 @@ This is a place to post my writing, share my thoughts, and make friends. I love 
 
 I care about ethics and integrity. I want to make this world a better/fairer place. I wanna be the kind of person people can come to for support and perspective. I believe everyone has good in them. It just takes time to see it. 
 
-Writing is **100%** done by me, not AI. I use AI to check my grammar tho :p
+Writing is **100%** done by me, not AI 
 
 **Last Updated: 2026-07-13**
 
