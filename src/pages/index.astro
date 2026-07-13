@@ -30,9 +30,9 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
   <h2>
     <a href={path("/now")}>{copy.homeNowBlurb}</a>?
   </h2>
-  <p>
-    See my <a href={path("/now")}>/now</a> page.
-  </p>
+  <div class="prose">
+    {copy.nowBody.map((item) => <p>{item}</p>)}
+  </div>
 
   <h2>
     <a href={path("/contact")}>{copy.homeContact}</a>
