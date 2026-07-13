@@ -17,7 +17,7 @@ When I do things, instead of thinking about what others would think of me, I thi
 
 It gave me the courage to follow my heart, since I don't care about others' opinions anymore. Later I realized it can also be perceived as "internal validation". When I approve the things I do, I don't need to walk around *begging* for validation from anyone else. 
 
-I post articles about the shift in my perspective on Xiaohongshu, surprised to find that being myself motivates others. I'm contributing to the society already. **Simply existing has power**, I don't need to do anything to prove my value. 
+I post articles about the shift in my perspective on [Xiaohongshu](https://www.xiaohongshu.com/user/profile/629cf576000000001b024f44), surprised to find that being myself motivates others. I'm contributing to the society already. **Simply existing has power**, I don't need to do anything to prove my value. 
 
 I'm very **grateful** for what I have now. And I'm glad I have the courage to follow my heart.  
 
