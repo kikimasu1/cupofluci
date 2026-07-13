@@ -31,7 +31,7 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
     <a href={path("/now")}>{copy.homeNowBlurb}</a>?
   </h2>
   <p>
-    See my <a href={path("/now")}>now</a> page.
+    See my <a href={path("/now")}>/now</a> page.
   </p>
 
   <h2>
