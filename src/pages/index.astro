@@ -4,7 +4,7 @@ import { getPosts, formatDate } from "../lib/posts";
 import { copy } from "../i18n/ui";
 import { path } from "../lib/path";
 
-const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 3);
+const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
 ---
 
 <BaseLayout title="cupofluci" description="A small personal site by Luci.">
@@ -59,7 +59,9 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 3);
       <p class="muted">{copy.articleEmpty}</p>
     )
   }
-  <p><a href={path("/article")}>{copy.homeMore}</a></p>
+  <p>
+    {copy.homeMorePrefix}<a href={path("/article")}>{copy.homeMoreLink}</a>.
+  </p>
 
   <section class="site-footer">
     <h2>{copy.footerOther}</h2>
