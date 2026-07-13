@@ -5,13 +5,13 @@ description: Things about me that can keep you busy.
 
 Hi, I’m Luci.
 
-This is a place to keep my writing, share my thoughts, and my life updates. I love writing, might as well share it with the rest of the world :3
+This is a place to post my writing, share my thoughts, and making friends. I love writing, might as well share it with the rest of the world :3
 
-I care about critical thinking, making this world a better & fairer place, and talking with interesting people.
+I care about making this world a better place. I wanna be the kind of person people can come to for support and prespective. I believe everyone has good in them. Just takes time to see. 
 
 Writing is **100%** me, not AI.
 
-**Last Updated: 2026-07-10**
+**Last Updated: 2026-07-13**
 
 ## TIME LINE FOR CONTEXT
 
@@ -20,7 +20,7 @@ Writing is **100%** me, not AI.
 - 2001 to 2021: accepted education in Suzhou, finished 2 years of bachelor study in Information and Computing Science at XJTLU, interned at a tech consulting company
 - 2021 to 2023: moved to Liverpool, England to get a bachelor's degree in Computer Science at University of Liverpool, joined LGBTQ+ society, had fun exploring UK & Europe, interned at a Liverpool startup & worked remotely for a healthcare company
 - 2023 to 2025: moved to New York City to earn my master degree at Cornell Tech in Information Systems
-- 2025: moved to Tampa, FL after getting a job that allows me to work fully remote, living my best life
+- 2025: moved to Tampa, FL after getting a job that allows me to work fully remote, live a 10-minute drive from the beach
 
 
 
