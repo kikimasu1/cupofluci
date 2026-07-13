@@ -16,9 +16,9 @@ I moved to queens at the beginning of my second year of grad school. Where I fel
 
 I lived in Elmhurst for 13 month, the food was incomparable there. And I got to read Chinese magazines/ books at Elmhurst library, felt so good to see my culture thriving in different lands. Instead of trying to be an abc-wannabe, I was very content with what I had. 
 
-Location is very important for me, it decides who I get to interact with, what food/ information I consume, what **community** I'm in. I'm grateful for queens, it's very culture rich, and nurished me in every possible way.
+Location is very important for me, it decides who I get to interact with, what food/ information I consume, what **community** I'm in. I'm grateful for queens, it's very culture rich, and nourished me in every possible way.
 
-After moving to Tampa, I was bored as hell at first, but as I gradually blend in, I found the local lifestyle fulfilling. I go to beaches whenever I can, go paddle boarding & kayaking & road trips on weekends, go to the beach 3 times a week. Ironically, after 3 car accidents (including one totaled my car), I felt like a Tampa/ Florida local than ever. 
+After moving to Tampa, I was bored as hell at first, but as I gradually blended in, I found the local lifestyle fulfilling. I go to beaches whenever I can, go paddle boarding & kayaking & road trips on weekends, go to the gym 3 times a week. Ironically, after 3 car accidents (including one totaled my car), I felt like a Tampa/ Florida local than ever. 
 
 When I post something like "in my next life, I can be a happy middle-to-low class american in a small town near the sea". People started to talk shit in the comment section, saying that *class/ social status* is the most important thing of all, why can't I dream big if I'm dreaming blah blah blah. They were judgmental for a stranger they know 0 background knowledge with, hope they can do better with life.
 
