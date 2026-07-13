@@ -60,9 +60,8 @@ export const copy = {
   nowTitle: "Now",
   nowUpdated: "Updated",
   nowBody: [
-    "Building personal site.",
-    "Selling my stuff in Tampa.",
-    "Doing apartment hunting for Tokyo.",
+    "Cleaning my apartment in Tampa.",
+    "Learning Japanese / Spanish.",
   ],
   articleTitle: "ARTICLES",
   articleEmpty: "No articles yet.",
