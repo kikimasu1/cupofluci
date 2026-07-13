@@ -44,9 +44,13 @@ Following others' paths is easy, following the mainstream success, the American 
 
 But staying true to yourself, listening to your inner voice, and being authentic takes hella courage.     
 
-### **Take action, do something about your life.** 
+### **Take action, do something about your life.**
 
-## You can be the positive change you want to see. 
 
-# Be the person your younger self would want in life. 
+
+## You can be the positive change you want to see.
+
+
+
+# Be the person your younger self would want in life.
 
