@@ -22,4 +22,4 @@ After moving to Tampa, I was bored as hell at first, but as I gradually blended 
 
 When I post something like "in my next life, I can be a happy middle-to-low class american in a small town near the sea". People started to talk shit in the comment section, saying that *class/ social status* is the most important thing of all, why can't I dream big if I'm dreaming blah blah blah. They were judgmental for a stranger they know 0 background knowledge with, hope they can do better with life.
 
-Happiness is a very subjective thing, I hope everyone can find where they can be the most authentic selves, and love & give back to the local community. Different places means different lifestyle, give them a try and see where life takes you!
+Happiness is a very subjective thing, I hope everyone can find where they can be the most authentic selves, and love & give back to the local community. Different places mean different lifestyle, give them a try and see where life takes you!
