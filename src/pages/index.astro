@@ -45,9 +45,6 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 3);
   <h2>
     {copy.homeNewestPrefix}<a href={path("/article")}>{copy.homeNewestArticles}</a>
   </h2>
-  <p>
-    See my <a href={path("/article")}>/article</a> page.
-  </p>
   {
     posts.length ? (
       <ul class="list">
