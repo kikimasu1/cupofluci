@@ -371,7 +371,7 @@ p {
   min-height: 1.4em;
 }
 
-/* Blog comments */
+/* Article comments */
 .comments {
   margin-top: 3rem;
   margin-inline: calc(50% - 50vw);

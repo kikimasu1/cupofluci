@@ -59,7 +59,7 @@ const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
         ))}
       </ul>
     ) : (
-      <p class="muted">{copy.blogEmpty}</p>
+      <p class="muted">{copy.articleEmpty}</p>
     )
   }
   <p><a href={path("/article")}>{copy.homeMore}</a></p>

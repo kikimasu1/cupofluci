@@ -8,7 +8,7 @@ export const copy = {
   navHome: "home",
   navAbout: "about",
   navNow: "now",
-  navBlog: "article",
+  navArticle: "article",
   footerOther: "OTHER PLATFORMS",
   instagramUrl: "https://www.instagram.com/cupofluci/",
   xiaohongshuUrl:
@@ -63,9 +63,9 @@ export const copy = {
     "Selling my stuff in Tampa.",
     "Doing apartment hunting for Tokyo.",
   ],
-  blogTitle: "ARTICLES",
-  blogEmpty: "No posts yet.",
-  blogAllMeta: "ALL ({count}) ARTICLES, NEW TO OLD",
+  articleTitle: "ARTICLES",
+  articleEmpty: "No articles yet.",
+  articleAllMeta: "ALL ({count}) ARTICLES, NEW TO OLD",
 } as const;
 
 export type CopyKey = keyof typeof copy;

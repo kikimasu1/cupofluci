@@ -9,12 +9,12 @@ const count = posts.length;
 ---
 
 <BaseLayout title="Articles" description="Articles from cupofluci.">
-  <h1 class="search-heading">{copy.blogTitle}</h1>
+  <h1 class="search-heading">{copy.articleTitle}</h1>
 
   <form class="search-form" role="search" action={path("/search")} method="get">
-    <label class="visually-hidden" for="blog-q">Search</label>
+    <label class="visually-hidden" for="article-q">Search</label>
     <input
-      id="blog-q"
+      id="article-q"
       name="q"
       type="search"
       maxlength="80"
@@ -26,7 +26,7 @@ const count = posts.length;
   </form>
 
   <h2 class="articles-meta">
-    ALL ({count}) ARTICLES, NEW TO OLD
+    {copy.articleAllMeta.replace("{count}", String(count))}
   </h2>
 
   {
@@ -40,7 +40,7 @@ const count = posts.length;
         ))}
       </ul>
     ) : (
-      <p class="muted">{copy.blogEmpty}</p>
+      <p class="muted">{copy.articleEmpty}</p>
     )
   }
 </BaseLayout>

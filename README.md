@@ -20,7 +20,7 @@ Edit the About page in `src/content/pages/about.md`.
 
 ## Write a post
 
-Add a Markdown file under `src/content/blog/`:
+Add a Markdown file under `src/content/article/`:
 
 ```md
 ---
