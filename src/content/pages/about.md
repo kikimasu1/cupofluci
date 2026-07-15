@@ -13,6 +13,8 @@ Doing random tech related jobs around the world sounds like a good idea to me, I
 
 Writing is **100%** done by me, not AI 
 
+<!--LAST_UPDATED-->
+
 ## TIME LINE FOR CONTEXT
 
 - 2001: born in Nancheng, Jiangxi

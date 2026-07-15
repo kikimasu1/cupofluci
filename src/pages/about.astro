@@ -1,15 +1,25 @@
 ---
+import { readFileSync } from "node:fs";
+import { createSatteriMarkdownProcessor } from "@astrojs/markdown-satteri";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getEntry, render } from "astro:content";
+import { getEntry } from "astro:content";
 import { fileUpdatedOn } from "../lib/file-updated";
 
 const about = await getEntry("pages", "about");
 if (!about) {
-  throw new Error('Missing content: src/content/pages/about.md');
+  throw new Error("Missing content: src/content/pages/about.md");
 }
 
-const { Content } = await render(about);
-const updated = fileUpdatedOn("src/content/pages/about.md");
+const aboutPath = "src/content/pages/about.md";
+const updated = fileUpdatedOn(aboutPath);
+const raw = readFileSync(aboutPath, "utf8");
+const body = raw.replace(/^---[\s\S]*?---\r?\n/, "").replace(
+  "<!--LAST_UPDATED-->",
+  `**Last Updated: ${updated}**`,
+);
+
+const processor = await createSatteriMarkdownProcessor();
+const { code } = await processor.render(body);
 ---
 
 <BaseLayout
@@ -18,7 +28,6 @@ const updated = fileUpdatedOn("src/content/pages/about.md");
 >
   <article class="prose">
     <h1>{about.data.title}</h1>
-    <p><strong>Last Updated: {updated}</strong></p>
-    <Content />
+    <Fragment set:html={code} />
   </article>
 </BaseLayout>
