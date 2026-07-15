@@ -7,4 +7,8 @@ description: What Luci is doing now.
 
 Cleaning my apartment in Tampa.
 
-Learning Japanese / Spanish.
+Selling/ donating stuff.
+
+Rethinking my life decisions.
+
+Re-reading "How to Live" by Derek Sivers.
