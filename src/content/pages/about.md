@@ -9,6 +9,8 @@ This is a place to post my writing, share my thoughts, and make friends. I love 
 
 I care about ethics and integrity. I want to make this world a better/fairer place. I wanna be the kind of person people can come to for support and perspective. I believe everyone has good in them. It just takes time to see it. 
 
+Doing random tech related jobs around the world sounds like a good idea to me, I'd like to [explore the world](/article/loc) as much as possible, then pick the ones I love to happily retire. 
+
 Writing is **100%** done by me, not AI 
 
 **Last Updated: 2026-07-13**
