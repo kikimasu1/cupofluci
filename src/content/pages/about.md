@@ -43,7 +43,7 @@ Self expression is a *form of art* in my opinion, I wouldn't stop expressing, cr
 - What you give out you receive 10x in return, that's why I only speak positive stuff, giving out positive energy, being in **high** vibration/ frequency to connect with my **highest self.** I only give & receive positive energy.
 - I wish [all the best](/article/love) for everyone, even if I disapprove of some of their decisions.
 - Humans don't need much to survive on this planet. Eat healthily, drink plenty of water, exercise regularly, and maintain [good relationships](/article/rela) with people around you is the key to happiness. 
-- Use free time to explore your hobbies & do what you love. 
+- Use [free time](/article/off-days) to explore your hobbies & do what you love. 
 - Money is a tool that helps me **experience** different things, as long as it can support my lifestyle I'm fine.
 - There's no meaning to one's life, we're all put on this earth to **experience** stuff, might as well take what life gives you, accept it. Everything happens for **the** **best**.
 
