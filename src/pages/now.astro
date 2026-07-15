@@ -1,14 +1,23 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { copy } from "../i18n/ui";
+import { getEntry } from "astro:content";
+import { renderDatedPage } from "../lib/render-dated-page";
 
-const updated = "2026-07-13";
+const pagePath = "src/content/pages/now.md";
+const now = await getEntry("pages", "now");
+if (!now) {
+  throw new Error("Missing content: src/content/pages/now.md");
+}
+
+const { code } = await renderDatedPage(pagePath);
 ---
 
-<BaseLayout title="Now" description="What Luci is doing now.">
-  <h1>{copy.nowTitle}</h1>
-  <p class="muted">{copy.nowUpdated}: {updated}</p>
-  <div class="prose">
-    {copy.nowBody.map((p) => <p>{p}</p>)}
-  </div>
+<BaseLayout
+  title={now.data.title}
+  description={now.data.description ?? now.data.title}
+>
+  <article class="prose">
+    <h1>{now.data.title}</h1>
+    <Fragment set:html={code} />
+  </article>
 </BaseLayout>

@@ -57,12 +57,6 @@ export const copy = {
   contactNeedState: "Please choose your state.",
   contactBadEmail: "Please enter a valid email address.",
   contactSlowDown: "Please wait a few seconds before trying again.",
-  nowTitle: "Now",
-  nowUpdated: "Updated",
-  nowBody: [
-    "Cleaning my apartment in Tampa.",
-    "Learning Japanese / Spanish.",
-  ],
   articleTitle: "ARTICLES",
   articleEmpty: "No articles yet.",
   articleAllMeta: "ALL ({count}) ARTICLES, NEW TO OLD",
