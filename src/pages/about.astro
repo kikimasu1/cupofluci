@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getEntry, render } from "astro:content";
+import { fileUpdatedOn } from "../lib/file-updated";
 
 const about = await getEntry("pages", "about");
 if (!about) {
@@ -8,6 +9,7 @@ if (!about) {
 }
 
 const { Content } = await render(about);
+const updated = fileUpdatedOn("src/content/pages/about.md");
 ---
 
 <BaseLayout
@@ -16,6 +18,7 @@ const { Content } = await render(about);
 >
   <article class="prose">
     <h1>{about.data.title}</h1>
+    <p><strong>Last Updated: {updated}</strong></p>
     <Content />
   </article>
 </BaseLayout>
