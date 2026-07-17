@@ -282,6 +282,16 @@ p {
   margin: 1.25rem 0;
 }
 
+.prose figure {
+  margin: 1.5rem 0;
+}
+
+.prose figcaption {
+  color: var(--muted);
+  font-size: 0.9em;
+  margin-top: 0.4rem;
+}
+
 .site-footer {
   margin-top: 6rem;
 }
