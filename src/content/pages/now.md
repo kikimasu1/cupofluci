@@ -7,7 +7,7 @@ description: What Luci is doing now.
 
 Cleaning my apartment in Tampa.
 
-Selling/ donating stuff.
+Selling/ donating/ throwing stuff.
 
 Recovering from a severe cold🤧
 
