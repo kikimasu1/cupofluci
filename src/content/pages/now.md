@@ -9,6 +9,6 @@ Cleaning my apartment in Tampa.
 
 Selling/ donating stuff.
 
-Rethinking my life decisions.
+Recovering from a severe cold🤧
 
 Re-reading "How to Live" by Derek Sivers.
