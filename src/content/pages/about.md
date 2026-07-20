@@ -7,7 +7,7 @@ Hi, I’m Luci.
 
 This is a place to post my writing, share my thoughts, and make friends. I love writing, might as well share it with the rest of the world :3
 
-I care about ethics and integrity. I want to make this world a better/fairer place. I wanna be the kind of person people can come to for support and perspective. I believe everyone has good in them. It just takes time to see it. 
+I value authenticity and integrity. I want to make this world a better/fairer place. I wanna be the kind of person people can come to for support and perspective. I believe everyone has good in them. It just takes time to see it. 
 
 Doing random tech related jobs around the world sounds like a good idea to me, I'd like to [explore the world](/article/loc) as much as possible, then pick the ones I love to happily retire. 
 
@@ -23,6 +23,8 @@ Writing is **100%** done by me, not AI
 - 2021 to 2023: moved to Liverpool, England to get a bachelor's degree in Computer Science at University of Liverpool, joined an LGBTQ+ society, had fun exploring the UK & Europe, interned at a Liverpool startup & worked remotely for a healthcare company
 - 2023 to 2025: moved to New York City to earn my master's degree at Cornell Tech in Information Systems
 - 2025: moved to Tampa, FL after getting a job that allows me to work fully remotely, just 10 minutes away from the beach
+
+
 
 ## I'M AMBITIOUSLY FOCUSED ON CREATING
 
@@ -46,6 +48,8 @@ Self expression is a *form of art* in my opinion, I wouldn't stop expressing, cr
 - Use [free time](/article/off-days) to explore your hobbies & do what you love. 
 - Money is a tool that helps me **experience** different things, as long as it can support my lifestyle I'm fine.
 - There's no meaning to one's life, we're all put on this earth to **experience** stuff, might as well take what life gives you, accept it. Everything happens for **the** **best**.
+
+
 
 ## Questions? Thoughts?
 
