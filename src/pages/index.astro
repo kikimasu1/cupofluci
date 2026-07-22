@@ -6,19 +6,19 @@ import { copy } from "../i18n/ui";
 import { path } from "../lib/path";
 
 const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
-const me10s = await getEntry("pages", "me-10s");
-if (!me10s) {
-  throw new Error("Missing content: src/content/pages/me-10s.md");
+const home = await getEntry("home", "home");
+if (!home) {
+  throw new Error("Missing content: src/content/home/home.md");
 }
-const timeline = me10s.data.timeline ?? [];
+const h = home.data;
 ---
 
-<BaseLayout title="cupofluci" description="A small personal site by Luci.">
-  <p class="home-note"><em>{copy.homeAiDisclaimer}</em></p>
-  <h2>{me10s.data.title}</h2>
-  {me10s.data.tagline ? <p>{me10s.data.tagline}</p> : null}
+<BaseLayout title={h.title} description={h.description ?? h.title}>
+  <p class="home-note"><em>{h.aiDisclaimer}</em></p>
+  <h2>{h.me10sTitle}</h2>
+  <p>{h.tagline}</p>
   {
-    timeline.map((item) => (
+    h.timeline.map((item) => (
       <p class="timeline-item">
         <span class="timeline-year">{item.year}</span>
         {` ${item.text}`}
@@ -27,29 +27,33 @@ const timeline = me10s.data.timeline ?? [];
   }
 
   <h2>
-    <a href={path("/about")}>{copy.homeMe10m}</a>?
+    <a href={path("/about")}>{h.me10mTitle}</a>?
   </h2>
   <p>
-    See my <a href={path("/about")}>/about</a> page.
+    {h.me10mBefore}{" "}
+    <a href={path("/about")}>{h.me10mLink}</a>
+    {" "}{h.me10mAfter}
   </p>
 
   <h2>
-    <a href={path("/now")}>{copy.homeNowBlurb}</a>?
+    <a href={path("/now")}>{h.nowTitle}</a>?
   </h2>
   <p>
-    See my <a href={path("/now")}>/now</a> page.
+    {h.nowBefore}{" "}
+    <a href={path("/now")}>{h.nowLink}</a>
+    {" "}{h.nowAfter}
   </p>
 
   <h2>
-    <a href={path("/contact")}>{copy.homeContact}</a>
+    <a href={path("/contact")}>{h.contactTitle}</a>
   </h2>
   <p>
-    I like meeting people, and I reply to every email, so{" "}
-    <a href={path("/contact")}>say hello</a>.
+    {h.contactBefore}{" "}
+    <a href={path("/contact")}>{h.contactLink}</a>.
   </p>
 
   <h2>
-    {copy.homeNewestPrefix}<a href={path("/article")}>{copy.homeNewestArticles}</a>
+    {h.newestPrefix}<a href={path("/article")}>{h.newestArticles}</a>
   </h2>
   {
     posts.length ? (
@@ -66,25 +70,19 @@ const timeline = me10s.data.timeline ?? [];
     )
   }
   <p>
-    {copy.homeMorePrefix}<a href={path("/article")}>{copy.homeMoreLink}</a>.
+    {h.morePrefix}<a href={path("/article")}>{h.moreLink}</a>.
   </p>
 
   <section class="site-footer">
-    <h2>{copy.footerOther}</h2>
-    <p>
-      <a href={copy.instagramUrl} target="_blank" rel="noopener noreferrer"
-        >Instagram</a
-      >
-    </p>
-    <p>
-      <a href={copy.xiaohongshuUrl} target="_blank" rel="noopener noreferrer"
-        >Xiaohongshu</a
-      >
-    </p>
-    <p>
-      <a href={copy.spotifyUrl} target="_blank" rel="noopener noreferrer"
-        >Spotify</a
-      >
-    </p>
+    <h2>{h.footerTitle}</h2>
+    {
+      h.platforms.map((platform) => (
+        <p>
+          <a href={platform.url} target="_blank" rel="noopener noreferrer">
+            {platform.label}
+          </a>
+        </p>
+      ))
+    }
   </section>
 </BaseLayout>
