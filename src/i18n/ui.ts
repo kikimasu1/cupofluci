@@ -1,8 +1,3 @@
-export type TimelineItem = {
-  year: string;
-  text: string;
-};
-
 export const copy = {
   brand: "cupofluci",
   navHome: "home",
@@ -15,23 +10,7 @@ export const copy = {
     "https://www.xiaohongshu.com/user/profile/629cf576000000001b024f44",
   spotifyUrl:
     "https://open.spotify.com/user/31k7rquypcbzdi5iuteo3vval5mi",
-  homeMe10s: "ME IN 10 SECONDS",
   homeAiDisclaimer: "(Writing is 100% done by me, not AI)",
-  homeTagline: "Curious human, writer, builder, and existentialist.",
-  homeTimeline: [
-    {
-      year: "(2016-2024)",
-      text: "Adulting. Learning by making mistakes, breaking hearts, feeling kinda lost.",
-    },
-    {
-      year: "(2024-2026)",
-      text: "Growing. Taking responsibilities, talking to people, accepting myself.",
-    },
-    {
-      year: "(2026-)",
-      text: "?",
-    },
-  ] satisfies TimelineItem[],
   homeMe10m: "ME IN 10 MINUTES",
   homeNowBlurb: "WHAT AM I DOING NOW",
   homeContact: "CONTACT ME",

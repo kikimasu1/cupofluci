@@ -1,18 +1,24 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getEntry } from "astro:content";
 import { getPosts, formatDate } from "../lib/posts";
 import { copy } from "../i18n/ui";
 import { path } from "../lib/path";
 
 const posts = (await getPosts()).filter((p) => !p.data.draft).slice(0, 5);
+const me10s = await getEntry("pages", "me-10s");
+if (!me10s) {
+  throw new Error("Missing content: src/content/pages/me-10s.md");
+}
+const timeline = me10s.data.timeline ?? [];
 ---
 
 <BaseLayout title="cupofluci" description="A small personal site by Luci.">
   <p class="home-note"><em>{copy.homeAiDisclaimer}</em></p>
-  <h2>{copy.homeMe10s}</h2>
-  <p>{copy.homeTagline}</p>
+  <h2>{me10s.data.title}</h2>
+  {me10s.data.tagline ? <p>{me10s.data.tagline}</p> : null}
   {
-    copy.homeTimeline.map((item) => (
+    timeline.map((item) => (
       <p class="timeline-item">
         <span class="timeline-year">{item.year}</span>
         {` ${item.text}`}
