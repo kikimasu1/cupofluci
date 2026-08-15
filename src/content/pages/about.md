@@ -25,6 +25,7 @@ Writing is **100%** done by me, not AI
 - 2021 to 2023: moved to Liverpool, England to get a bachelor's degree in Computer Science at University of Liverpool, joined an LGBTQ+ society, had fun exploring the UK & Europe, interned at a Liverpool startup & worked remotely for a healthcare company
 - 2023 to 2025: moved to New York City to earn my master's degree at Cornell Tech in Information Systems
 - 2025: moved to Tampa, FL after getting a job that allows me to work fully remotely, just 10 minutes away from the beach
+- 2026: moved to Tokyo, Japan. The public transportation is superb, food is great, let alone the 24/7 convenience store was amazing. Hopefully I get to improve my Japanese and make more friends here.
 
 
 
