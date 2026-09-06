@@ -3,12 +3,12 @@ title: Now
 description: What Luci is doing now.
 ---
 
-Exploring different wards in Tokyo
+hitting the gym, going to libraries, cooking my meals
 
-I love the food ;3 there are so many restaurants n everything seems so affordable compared to the States
+selling my stuff on メルカリ, giving out energy as I'm letting go of the stuff that doesn't serve me anymore
 
-sold my luxury bags, don't want designer brands to be of any importance to me anymore
+learning Japanese, I have some fundamentals, working on 文法
 
-working on new articles ;p
+I have some advantage knowing the meaning behind most of the characters, but I do need to remember their pronunciation in Japanese
 
 <!--LAST_UPDATED-->
