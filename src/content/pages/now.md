@@ -3,7 +3,7 @@ title: Now
 description: What Luci is doing now.
 ---
 
-hitting the gym, going to libraries, cooking my meals
+hitting the gym, going to libraries, cooking my meals, finding interesting side hustles
 
 selling my stuff on メルカリ, giving out energy as I'm letting go of the stuff that doesn't serve me anymore
 
