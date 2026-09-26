@@ -2,7 +2,7 @@
 title: non commit
 description: ""
 date: 2026-09-26T00:00:00.000Z
-draft: true
+draft: false
 ---
 
 Living a non-commit life
