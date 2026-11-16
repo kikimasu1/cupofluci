@@ -49,7 +49,7 @@ npx wrangler secret put RESEND_API_KEY
 npx wrangler secret put OWNER_REPLY_SECRET
 ```
 
-Owner replies: open `https://cupofluci.com/reply/`, enter the secret + article slug + text. Posts as **Luci** on that article (no email notify). Reply by email separately if you want a private thread.
+Owner replies: open `https://cupofluci.com/reply/`, enter the secret + article slug, load comments, pick who you’re replying to, then post. It shows publicly as a nested **Luci · reply to Name** under that comment (no email notify). Email them separately for a private thread.
 
 Without Resend, submissions still save. Read private data with:
 

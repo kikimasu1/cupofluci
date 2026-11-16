@@ -439,8 +439,14 @@ p {
 }
 
 .comment-item--owner {
-  padding-left: 0.75rem;
   border-left: 2px solid var(--comments-muted);
+  padding-left: 0.75rem;
+}
+
+.comment-item--nested {
+  margin-left: 1.25rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--comments-border);
 }
 
 .comment-meta {

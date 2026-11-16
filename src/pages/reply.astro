@@ -14,8 +14,8 @@ const apiUrl =
 >
   <h1>Owner reply</h1>
   <p class="muted">
-    Post a public Luci reply under an article. Email the person separately if you
-    want a private thread.
+    Pick one public comment and reply as Luci. Everyone can see it under that
+    comment. Email them separately if you also want a private thread.
   </p>
 
   <form class="owner-reply-form comment-form-block" id="owner-reply-form" data-api={apiUrl}>
@@ -32,19 +32,28 @@ const apiUrl =
 
     <div class="field">
       <label for="reply-slug">Article slug (e.g. nc, min)</label>
-      <input
-        id="reply-slug"
-        name="post_slug"
-        type="text"
-        required
-        maxlength="120"
-        pattern="[A-Za-z0-9][A-Za-z0-9._-]{0,119}"
-        autocomplete="off"
-      />
+      <div class="slug-row">
+        <input
+          id="reply-slug"
+          name="post_slug"
+          type="text"
+          required
+          maxlength="120"
+          pattern="[A-Za-z0-9][A-Za-z0-9._-]{0,119}"
+          autocomplete="off"
+        />
+        <button type="button" id="load-comments-btn">load comments</button>
+      </div>
+    </div>
+
+    <div class="field" id="parent-field" hidden>
+      <label>Reply to</label>
+      <div class="parent-list" id="parent-list" role="radiogroup" aria-label="Comment to reply to"></div>
+      <p class="muted" id="parent-empty" hidden>No visitor comments on this article yet.</p>
     </div>
 
     <div class="field">
-      <label for="reply-body">Reply</label>
+      <label for="reply-body">Your public reply</label>
       <textarea
         id="reply-body"
         name="comment"
@@ -61,19 +70,173 @@ const apiUrl =
 <style>
   .owner-reply-form {
     margin-top: 1.5rem;
-    max-width: 36rem;
+    max-width: 40rem;
+  }
+
+  .slug-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+  .slug-row input {
+    flex: 1;
+  }
+
+  .slug-row button {
+    font: inherit;
+    border: none;
+    padding: 0.55rem 0.8rem;
+    background: var(--comment-submit-bg);
+    color: var(--submit-text);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .parent-list {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .parent-option {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.55rem 0.65rem;
+    align-items: start;
+    padding: 0.65rem 0.7rem;
+    background: var(--input-bg);
+    color: var(--input-text);
+    cursor: pointer;
+  }
+
+  .parent-option input {
+    margin-top: 0.2rem;
+  }
+
+  .parent-option-meta {
+    font-size: 0.95rem;
+  }
+
+  .parent-option-body {
+    grid-column: 2;
+    margin: 0;
+    white-space: pre-wrap;
+    opacity: 0.9;
   }
 </style>
 
 <script>
+  type Entry = {
+    id: number;
+    name: string;
+    comment: string;
+    created_at: string;
+    is_owner?: number | boolean;
+    reply_to_id?: number | null;
+  };
+
   const form = document.getElementById("owner-reply-form") as HTMLFormElement | null;
   const statusEl = document.getElementById("owner-reply-status");
   const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+  const loadBtn = document.getElementById("load-comments-btn") as HTMLButtonElement | null;
+  const parentField = document.getElementById("parent-field");
+  const parentList = document.getElementById("parent-list");
+  const parentEmpty = document.getElementById("parent-empty");
   const api = form?.dataset.api?.trim() ?? "";
+
+  let loadedParents: Entry[] = [];
 
   function setStatus(text: string) {
     if (statusEl) statusEl.textContent = text;
   }
+
+  function formatWhen(iso: string): string {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return iso.slice(0, 10);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function preview(text: string): string {
+    const oneLine = text.replace(/\s+/g, " ").trim();
+    return oneLine.length > 180 ? `${oneLine.slice(0, 180)}…` : oneLine;
+  }
+
+  function renderParents(entries: Entry[]) {
+    if (!parentList || !parentField || !parentEmpty) return;
+    parentList.replaceChildren();
+    parentField.hidden = false;
+
+    const parents = entries.filter((e) => !e.reply_to_id && !e.is_owner);
+    loadedParents = parents;
+
+    if (!parents.length) {
+      parentEmpty.hidden = false;
+      return;
+    }
+
+    parentEmpty.hidden = true;
+    parents.forEach((entry, index) => {
+      const label = document.createElement("label");
+      label.className = "parent-option";
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "reply_to_id";
+      radio.value = String(entry.id);
+      radio.required = true;
+      if (index === 0) radio.checked = true;
+
+      const meta = document.createElement("div");
+      meta.className = "parent-option-meta";
+      meta.textContent = `${entry.name} (${formatWhen(entry.created_at)}) · #${entry.id}`;
+
+      const body = document.createElement("p");
+      body.className = "parent-option-body";
+      body.textContent = preview(entry.comment);
+
+      label.append(radio, meta, body);
+      parentList.append(label);
+    });
+  }
+
+  async function loadComments() {
+    if (!form) return;
+    if (!api) {
+      setStatus("Comments API is not configured.");
+      return;
+    }
+
+    const postSlug = String(new FormData(form).get("post_slug") ?? "").trim();
+    if (!postSlug) {
+      setStatus("Enter an article slug first.");
+      return;
+    }
+
+    if (loadBtn) loadBtn.disabled = true;
+    setStatus("Loading comments…");
+
+    try {
+      const res = await fetch(
+        `${api.replace(/\/$/, "")}/entries?post=${encodeURIComponent(postSlug)}`,
+      );
+      if (!res.ok) throw new Error("bad status");
+      const data = (await res.json()) as { entries?: Entry[] };
+      renderParents(data.entries ?? []);
+      setStatus(
+        loadedParents.length
+          ? `Loaded ${loadedParents.length} comment(s). Pick one, write your reply, post.`
+          : "No visitor comments to reply to on this article.",
+      );
+    } catch {
+      setStatus("Could not load comments.");
+    } finally {
+      if (loadBtn) loadBtn.disabled = false;
+    }
+  }
+
+  loadBtn?.addEventListener("click", () => {
+    void loadComments();
+  });
 
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -88,9 +251,14 @@ const apiUrl =
     const secret = String(fd.get("secret") ?? "");
     const postSlug = String(fd.get("post_slug") ?? "").trim();
     const comment = String(fd.get("comment") ?? "").trim();
+    const replyToId = Number.parseInt(String(fd.get("reply_to_id") ?? ""), 10);
 
     if (!secret || !postSlug || !comment) {
       setStatus("Please fill in every field.");
+      return;
+    }
+    if (!Number.isInteger(replyToId) || replyToId < 1) {
+      setStatus("Load comments and pick who you’re replying to.");
       return;
     }
 
@@ -105,19 +273,28 @@ const apiUrl =
           secret,
           post_slug: postSlug,
           comment,
+          reply_to_id: replyToId,
         }),
       });
       if (res.status === 401) {
         setStatus("Wrong secret.");
         return;
       }
-      if (!res.ok) throw new Error("bad status");
-      const data = (await res.json()) as { entry?: { id: number } };
-      form.elements.namedItem("comment") &&
-        ((form.elements.namedItem("comment") as HTMLTextAreaElement).value = "");
+      if (!res.ok) {
+        const err = (await res.json().catch(() => null)) as { error?: string } | null;
+        setStatus(err?.error ? `Failed: ${err.error}` : "Something went wrong.");
+        return;
+      }
+      const data = (await res.json()) as {
+        entry?: { id: number; reply_to_name?: string };
+      };
+      const bodyEl = form.elements.namedItem("comment") as HTMLTextAreaElement | null;
+      if (bodyEl) bodyEl.value = "";
+      const who = data.entry?.reply_to_name ?? "them";
       setStatus(
-        `Posted as Luci (#${data.entry?.id ?? "?"}). Open /article/${postSlug}/ to check.`,
+        `Posted as Luci reply to ${who} (#${data.entry?.id ?? "?"}). Check /article/${postSlug}/`,
       );
+      await loadComments();
     } catch {
       setStatus("Something went wrong. Please try again.");
     } finally {

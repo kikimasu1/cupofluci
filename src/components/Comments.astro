@@ -89,6 +89,8 @@ const { postSlug } = Astro.props;
     comment: string;
     created_at: string;
     is_owner?: number | boolean;
+    reply_to_id?: number | string | null;
+    reply_to_name?: string | null;
   };
 
   const root = document.getElementById("comments");
@@ -113,6 +115,54 @@ const { postSlug } = Astro.props;
     return d.toISOString().slice(0, 10);
   }
 
+  function entryId(entry: Entry): number {
+    return Number(entry.id);
+  }
+
+  function buildCommentItem(entry: Entry, indexLabel: string, nested: boolean): HTMLLIElement {
+    const isOwner = Boolean(entry.is_owner);
+    const li = document.createElement("li");
+    li.className = [
+      "comment-item",
+      isOwner ? "comment-item--owner" : "",
+      nested ? "comment-item--nested" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const meta = document.createElement("div");
+    meta.className = "comment-meta";
+
+    const num = document.createElement("span");
+    num.className = "comment-num";
+    num.textContent = `${indexLabel}. `;
+
+    const name = document.createElement("strong");
+    name.className = "comment-name";
+    name.textContent = isOwner ? "Luci" : entry.name;
+
+    const date = document.createElement("span");
+    date.className = "comment-date";
+    date.textContent = ` (${formatWhen(entry.created_at)})`;
+
+    meta.append(num, name, date);
+
+    if (isOwner) {
+      const badge = document.createElement("span");
+      badge.className = "comment-owner-badge";
+      const toName = entry.reply_to_name?.trim();
+      badge.textContent = toName ? ` · reply to ${toName}` : " · reply";
+      meta.append(badge);
+    }
+
+    const body = document.createElement("p");
+    body.className = "comment-body";
+    body.textContent = entry.comment;
+
+    li.append(meta, body);
+    return li;
+  }
+
   function renderEntries(entries: Entry[]) {
     if (!listEl || !emptyEl) return;
     listEl.replaceChildren();
@@ -124,42 +174,38 @@ const { postSlug } = Astro.props;
     }
 
     emptyEl.hidden = true;
-    entries.forEach((entry, index) => {
-      const isOwner = Boolean(entry.is_owner);
-      const li = document.createElement("li");
-      li.className = isOwner ? "comment-item comment-item--owner" : "comment-item";
 
-      const meta = document.createElement("div");
-      meta.className = "comment-meta";
+    const roots = entries.filter((e) => !e.reply_to_id);
+    const byParent = new Map<number, Entry[]>();
+    for (const entry of entries) {
+      if (!entry.reply_to_id) continue;
+      const parentId = Number(entry.reply_to_id);
+      const list = byParent.get(parentId) ?? [];
+      list.push(entry);
+      byParent.set(parentId, list);
+    }
 
-      const num = document.createElement("span");
-      num.className = "comment-num";
-      num.textContent = `${index + 1}. `;
+    let rootIndex = 0;
+    for (const entry of roots) {
+      rootIndex += 1;
+      listEl.append(buildCommentItem(entry, String(rootIndex), false));
+      const children = byParent.get(entryId(entry)) ?? [];
+      children.forEach((child, childIndex) => {
+        listEl.append(
+          buildCommentItem(child, `${rootIndex}.${childIndex + 1}`, true),
+        );
+      });
+    }
 
-      const name = document.createElement("strong");
-      name.className = "comment-name";
-      name.textContent = isOwner ? "Luci" : entry.name;
-
-      const date = document.createElement("span");
-      date.className = "comment-date";
-      date.textContent = ` (${formatWhen(entry.created_at)})`;
-
-      meta.append(num, name, date);
-
-      if (isOwner) {
-        const badge = document.createElement("span");
-        badge.className = "comment-owner-badge";
-        badge.textContent = " · reply";
-        meta.append(badge);
-      }
-
-      const body = document.createElement("p");
-      body.className = "comment-body";
-      body.textContent = entry.comment;
-
-      li.append(meta, body);
-      listEl.append(li);
-    });
+    // Orphan replies (parent missing) still show, indented.
+    const rootIds = new Set(roots.map(entryId));
+    let orphanIndex = 0;
+    for (const entry of entries) {
+      if (!entry.reply_to_id) continue;
+      if (rootIds.has(Number(entry.reply_to_id))) continue;
+      orphanIndex += 1;
+      listEl.append(buildCommentItem(entry, `·${orphanIndex}`, true));
+    }
   }
 
   async function loadEntries() {

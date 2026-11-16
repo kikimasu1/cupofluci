@@ -13,6 +13,8 @@ type EntryRow = {
   created_at: string;
   post_slug?: string;
   is_owner?: number;
+  reply_to_id?: number | null;
+  reply_to_name?: string | null;
 };
 
 const OWNER_DISPLAY_NAME = "Luci";
@@ -197,10 +199,18 @@ export default {
       }
 
       const { results } = await env.DB.prepare(
-        `SELECT id, name, comment, created_at, COALESCE(is_owner, 0) AS is_owner
-         FROM entries
-         WHERE post_slug = ?
-         ORDER BY datetime(created_at) ASC, id ASC
+        `SELECT
+           e.id,
+           e.name,
+           e.comment,
+           e.created_at,
+           COALESCE(e.is_owner, 0) AS is_owner,
+           e.reply_to_id,
+           p.name AS reply_to_name
+         FROM entries e
+         LEFT JOIN entries p ON p.id = e.reply_to_id
+         WHERE e.post_slug = ?
+         ORDER BY datetime(e.created_at) ASC, e.id ASC
          LIMIT 200`,
       )
         .bind(postSlug.slice(0, MAX_SLUG))
@@ -229,12 +239,43 @@ export default {
 
       const postSlug = cleanText(String(body.post_slug ?? ""), MAX_SLUG);
       const comment = cleanComment(String(body.comment ?? ""), MAX_COMMENT);
+      const replyToRaw = body.reply_to_id;
+      const replyToId =
+        typeof replyToRaw === "number"
+          ? replyToRaw
+          : Number.parseInt(String(replyToRaw ?? ""), 10);
 
       if (!postSlug || !SLUG_RE.test(postSlug)) {
         return json({ error: "invalid post" }, 400, origin);
       }
       if (!comment) {
         return json({ error: "missing fields" }, 400, origin);
+      }
+      if (!Number.isInteger(replyToId) || replyToId < 1) {
+        return json({ error: "reply_to_id required" }, 400, origin);
+      }
+
+      const parent = await env.DB.prepare(
+        `SELECT id, name, post_slug, COALESCE(is_owner, 0) AS is_owner, reply_to_id
+         FROM entries
+         WHERE id = ?
+         LIMIT 1`,
+      )
+        .bind(replyToId)
+        .first<{
+          id: number;
+          name: string;
+          post_slug: string;
+          is_owner: number;
+          reply_to_id: number | null;
+        }>();
+
+      if (!parent || parent.post_slug !== postSlug) {
+        return json({ error: "parent comment not found" }, 404, origin);
+      }
+      // One-level nesting only: reply to a visitor comment, not to a Luci reply.
+      if (parent.is_owner || parent.reply_to_id) {
+        return json({ error: "can only reply to a top-level comment" }, 400, origin);
       }
 
       const email = cleanText(
@@ -243,14 +284,22 @@ export default {
       ).toLowerCase();
 
       const result = await env.DB.prepare(
-        `INSERT INTO entries (post_slug, name, email, comment, is_owner, ip_hash)
-         VALUES (?, ?, ?, ?, 1, NULL)
-         RETURNING id, name, comment, created_at, is_owner`,
+        `INSERT INTO entries (post_slug, name, email, comment, is_owner, reply_to_id, ip_hash)
+         VALUES (?, ?, ?, ?, 1, ?, NULL)
+         RETURNING id, name, comment, created_at, is_owner, reply_to_id`,
       )
-        .bind(postSlug, OWNER_DISPLAY_NAME, email, comment)
+        .bind(postSlug, OWNER_DISPLAY_NAME, email, comment, replyToId)
         .first<EntryRow>();
 
-      return json({ entry: result }, 201, origin);
+      return json(
+        {
+          entry: result
+            ? { ...result, reply_to_name: parent.name }
+            : result,
+        },
+        201,
+        origin,
+      );
     }
 
     if (url.pathname === "/entries" && request.method === "POST") {

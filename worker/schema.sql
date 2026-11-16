@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS entries (
   email TEXT NOT NULL,
   comment TEXT NOT NULL,
   is_owner INTEGER NOT NULL DEFAULT 0,
+  reply_to_id INTEGER,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
   ip_hash TEXT
 );
