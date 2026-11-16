@@ -3,6 +3,7 @@ export interface Env {
   ALLOWED_ORIGINS?: string;
   NOTIFY_EMAIL?: string;
   RESEND_API_KEY?: string;
+  OWNER_REPLY_SECRET?: string;
 }
 
 type EntryRow = {
@@ -11,7 +12,10 @@ type EntryRow = {
   comment: string;
   created_at: string;
   post_slug?: string;
+  is_owner?: number;
 };
+
+const OWNER_DISPLAY_NAME = "Luci";
 
 const MAX_NAME = 80;
 const MAX_EMAIL = 120;
@@ -75,11 +79,22 @@ async function hashIp(ip: string): Promise<string> {
     .slice(0, 32);
 }
 
+function secretsEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let out = 0;
+  for (let i = 0; i < a.length; i++) {
+    out |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return out === 0;
+}
+
 async function notifyComment(
   env: Env,
   entry: { name: string; email: string; comment: string; post_slug: string },
 ) {
   if (!env.RESEND_API_KEY || !env.NOTIFY_EMAIL) return;
+
+  const postUrl = `https://cupofluci.com/article/${entry.post_slug}/`;
 
   await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -90,8 +105,18 @@ async function notifyComment(
     body: JSON.stringify({
       from: "cupofluci comments <onboarding@resend.dev>",
       to: [env.NOTIFY_EMAIL],
+      reply_to: entry.email,
       subject: `Comment on ${entry.post_slug}: ${entry.name}`,
-      text: `Post: ${entry.post_slug}\nFrom: ${entry.name} <${entry.email}>\n\n${entry.comment}`,
+      text: [
+        `New comment on ${postUrl}`,
+        ``,
+        `From: ${entry.name} <${entry.email}>`,
+        ``,
+        entry.comment,
+        ``,
+        `---`,
+        `Reply to this email to write back to ${entry.name}.`,
+      ].join("\n"),
     }),
   }).catch(() => {});
 }
@@ -126,8 +151,17 @@ async function notifyContact(
     body: JSON.stringify({
       from: "cupofluci contact <onboarding@resend.dev>",
       to: [env.NOTIFY_EMAIL],
+      reply_to: entry.email,
       subject: `Contact from ${entry.name}`,
-      text: `From: ${entry.name} <${entry.email}>\nLocation: ${location}\n\n${entry.message}`,
+      text: [
+        `From: ${entry.name} <${entry.email}>`,
+        `Location: ${location}`,
+        ``,
+        entry.message,
+        ``,
+        `---`,
+        `Reply to this email to write back to ${entry.name}.`,
+      ].join("\n"),
     }),
   }).catch(() => {});
 }
@@ -163,7 +197,7 @@ export default {
       }
 
       const { results } = await env.DB.prepare(
-        `SELECT id, name, comment, created_at
+        `SELECT id, name, comment, created_at, COALESCE(is_owner, 0) AS is_owner
          FROM entries
          WHERE post_slug = ?
          ORDER BY datetime(created_at) ASC, id ASC
@@ -174,6 +208,49 @@ export default {
 
       // Intentionally omit email from public responses.
       return json({ entries: results ?? [] }, 200, origin);
+    }
+
+    if (url.pathname === "/owner-reply" && request.method === "POST") {
+      if (!env.OWNER_REPLY_SECRET) {
+        return json({ error: "owner reply not configured" }, 503, origin);
+      }
+
+      let body: Record<string, unknown>;
+      try {
+        body = (await request.json()) as Record<string, unknown>;
+      } catch {
+        return json({ error: "invalid json" }, 400, origin);
+      }
+
+      const secret = String(body.secret ?? "");
+      if (!secretsEqual(secret, env.OWNER_REPLY_SECRET)) {
+        return json({ error: "unauthorized" }, 401, origin);
+      }
+
+      const postSlug = cleanText(String(body.post_slug ?? ""), MAX_SLUG);
+      const comment = cleanComment(String(body.comment ?? ""), MAX_COMMENT);
+
+      if (!postSlug || !SLUG_RE.test(postSlug)) {
+        return json({ error: "invalid post" }, 400, origin);
+      }
+      if (!comment) {
+        return json({ error: "missing fields" }, 400, origin);
+      }
+
+      const email = cleanText(
+        env.NOTIFY_EMAIL ?? "owner@cupofluci.local",
+        MAX_EMAIL,
+      ).toLowerCase();
+
+      const result = await env.DB.prepare(
+        `INSERT INTO entries (post_slug, name, email, comment, is_owner, ip_hash)
+         VALUES (?, ?, ?, ?, 1, NULL)
+         RETURNING id, name, comment, created_at, is_owner`,
+      )
+        .bind(postSlug, OWNER_DISPLAY_NAME, email, comment)
+        .first<EntryRow>();
+
+      return json({ entry: result }, 201, origin);
     }
 
     if (url.pathname === "/entries" && request.method === "POST") {

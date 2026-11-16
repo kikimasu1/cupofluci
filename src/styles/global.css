@@ -438,12 +438,27 @@ p {
   border-bottom: none;
 }
 
+.comment-item--owner {
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--comments-muted);
+}
+
 .comment-meta {
   margin-bottom: 0.35rem;
 }
 
 .comment-name {
   font-style: italic;
+}
+
+.comment-item--owner .comment-name {
+  font-style: normal;
+  font-weight: 700;
+}
+
+.comment-owner-badge {
+  color: var(--comments-muted);
+  font-size: 0.9em;
 }
 
 .comment-date {

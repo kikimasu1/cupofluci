@@ -1,0 +1,127 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const apiUrl =
+  import.meta.env.PUBLIC_COMMENTS_API ??
+  import.meta.env.PUBLIC_GUESTBOOK_API ??
+  "";
+---
+
+<BaseLayout
+  title="Owner reply"
+  description="Private owner reply form."
+  noindex={true}
+>
+  <h1>Owner reply</h1>
+  <p class="muted">
+    Post a public Luci reply under an article. Email the person separately if you
+    want a private thread.
+  </p>
+
+  <form class="owner-reply-form comment-form-block" id="owner-reply-form" data-api={apiUrl}>
+    <div class="field">
+      <label for="reply-secret">Secret</label>
+      <input
+        id="reply-secret"
+        name="secret"
+        type="password"
+        required
+        autocomplete="current-password"
+      />
+    </div>
+
+    <div class="field">
+      <label for="reply-slug">Article slug (e.g. nc, min)</label>
+      <input
+        id="reply-slug"
+        name="post_slug"
+        type="text"
+        required
+        maxlength="120"
+        pattern="[A-Za-z0-9][A-Za-z0-9._-]{0,119}"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="field">
+      <label for="reply-body">Reply</label>
+      <textarea
+        id="reply-body"
+        name="comment"
+        required
+        maxlength="2000"
+        rows="8"></textarea>
+    </div>
+
+    <button type="submit">post luci reply</button>
+    <p class="status" id="owner-reply-status" role="status" aria-live="polite"></p>
+  </form>
+</BaseLayout>
+
+<style>
+  .owner-reply-form {
+    margin-top: 1.5rem;
+    max-width: 36rem;
+  }
+</style>
+
+<script>
+  const form = document.getElementById("owner-reply-form") as HTMLFormElement | null;
+  const statusEl = document.getElementById("owner-reply-status");
+  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+  const api = form?.dataset.api?.trim() ?? "";
+
+  function setStatus(text: string) {
+    if (statusEl) statusEl.textContent = text;
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!form || !submitBtn) return;
+
+    if (!api) {
+      setStatus("Comments API is not configured.");
+      return;
+    }
+
+    const fd = new FormData(form);
+    const secret = String(fd.get("secret") ?? "");
+    const postSlug = String(fd.get("post_slug") ?? "").trim();
+    const comment = String(fd.get("comment") ?? "").trim();
+
+    if (!secret || !postSlug || !comment) {
+      setStatus("Please fill in every field.");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    setStatus("Posting…");
+
+    try {
+      const res = await fetch(`${api.replace(/\/$/, "")}/owner-reply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          secret,
+          post_slug: postSlug,
+          comment,
+        }),
+      });
+      if (res.status === 401) {
+        setStatus("Wrong secret.");
+        return;
+      }
+      if (!res.ok) throw new Error("bad status");
+      const data = (await res.json()) as { entry?: { id: number } };
+      form.elements.namedItem("comment") &&
+        ((form.elements.namedItem("comment") as HTMLTextAreaElement).value = "");
+      setStatus(
+        `Posted as Luci (#${data.entry?.id ?? "?"}). Open /article/${postSlug}/ to check.`,
+      );
+    } catch {
+      setStatus("Something went wrong. Please try again.");
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>

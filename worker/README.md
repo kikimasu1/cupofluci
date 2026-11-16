@@ -44,7 +44,12 @@ npx wrangler secret put NOTIFY_EMAIL
 # lucidreaminxx@gmail.com
 
 npx wrangler secret put RESEND_API_KEY
+
+# private Luci reply form at /reply (do not publish this value)
+npx wrangler secret put OWNER_REPLY_SECRET
 ```
+
+Owner replies: open `https://cupofluci.com/reply/`, enter the secret + article slug + text. Posts as **Luci** on that article (no email notify). Reply by email separately if you want a private thread.
 
 Without Resend, submissions still save. Read private data with:
 
