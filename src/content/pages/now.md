@@ -3,12 +3,12 @@ title: Now
 description: What Luci is doing now.
 ---
 
-hitting the gym, going to libraries, joining interesting events, cooking my meals, finding interesting & good-paying side hustles
+I had an EVO ICL eye surgery on 10/25, now I need to put eye drops *4 every day.
 
-selling my stuff on メルカリ, grateful for owning them, but they don't serve me anymore
+picking up Japanese, catching up w/ Pepper's adopter, glad to see him doing well in Tampa.
 
-learning Japanese, I have some fundamentals, working on 文法ぶんぽう
+joining all kinds of activities to get some freebies :3
 
-I have some advantage knowing the meaning behind most of the characters, but I do need to learn their pronunciation in Japanese
+tokyo is getting colder these days, I'm taking good care of myself 🫶
 
 <!--LAST_UPDATED-->
