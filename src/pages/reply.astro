@@ -99,18 +99,35 @@ const apiUrl =
   }
 
   .parent-option {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.55rem 0.65rem;
-    align-items: start;
+    display: block;
     padding: 0.65rem 0.7rem;
     background: var(--input-bg);
     color: var(--input-text);
     cursor: pointer;
   }
 
-  .parent-option input {
-    margin-top: 0.2rem;
+  .parent-option-head {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .parent-option input[type="radio"] {
+    width: 0.85rem;
+    height: 0.85rem;
+    margin: 0;
+    flex: 0 0 auto;
+    accent-color: #888;
+  }
+
+  .parent-option input[type="radio"]:focus {
+    outline: 1px solid #888;
+    outline-offset: 1px;
+  }
+
+  .parent-option input[type="radio"]:focus-visible {
+    outline: 1px solid #888;
+    outline-offset: 1px;
   }
 
   .parent-option-meta {
@@ -118,10 +135,11 @@ const apiUrl =
   }
 
   .parent-option-body {
-    grid-column: 2;
-    margin: 0;
+    margin: 0.45rem 0 0;
+    padding-left: 1.3rem;
     white-space: pre-wrap;
     opacity: 0.9;
+    line-height: 1.45;
   }
 </style>
 
@@ -156,11 +174,6 @@ const apiUrl =
     return d.toISOString().slice(0, 10);
   }
 
-  function preview(text: string): string {
-    const oneLine = text.replace(/\s+/g, " ").trim();
-    return oneLine.length > 180 ? `${oneLine.slice(0, 180)}…` : oneLine;
-  }
-
   function renderParents(entries: Entry[]) {
     if (!parentList || !parentField || !parentEmpty) return;
     parentList.replaceChildren();
@@ -179,6 +192,9 @@ const apiUrl =
       const label = document.createElement("label");
       label.className = "parent-option";
 
+      const head = document.createElement("div");
+      head.className = "parent-option-head";
+
       const radio = document.createElement("input");
       radio.type = "radio";
       radio.name = "reply_to_id";
@@ -190,11 +206,13 @@ const apiUrl =
       meta.className = "parent-option-meta";
       meta.textContent = `${entry.name} (${formatWhen(entry.created_at)}) · #${entry.id}`;
 
+      head.append(radio, meta);
+
       const body = document.createElement("p");
       body.className = "parent-option-body";
-      body.textContent = preview(entry.comment);
+      body.textContent = entry.comment;
 
-      label.append(radio, meta, body);
+      label.append(head, body);
       parentList.append(label);
     });
   }
