@@ -119,7 +119,11 @@ const { postSlug } = Astro.props;
     return Number(entry.id);
   }
 
-  function buildCommentItem(entry: Entry, indexLabel: string, nested: boolean): HTMLLIElement {
+  function buildCommentItem(
+    entry: Entry,
+    indexLabel: string | null,
+    nested: boolean,
+  ): HTMLLIElement {
     const isOwner = Boolean(entry.is_owner);
     const li = document.createElement("li");
     li.className = [
@@ -133,9 +137,12 @@ const { postSlug } = Astro.props;
     const meta = document.createElement("div");
     meta.className = "comment-meta";
 
-    const num = document.createElement("span");
-    num.className = "comment-num";
-    num.textContent = `${indexLabel}. `;
+    if (indexLabel) {
+      const num = document.createElement("span");
+      num.className = "comment-num";
+      num.textContent = `${indexLabel}. `;
+      meta.append(num);
+    }
 
     const name = document.createElement("strong");
     name.className = "comment-name";
@@ -145,7 +152,7 @@ const { postSlug } = Astro.props;
     date.className = "comment-date";
     date.textContent = ` (${formatWhen(entry.created_at)})`;
 
-    meta.append(num, name, date);
+    meta.append(name, date);
 
     if (isOwner) {
       const badge = document.createElement("span");
@@ -190,21 +197,20 @@ const { postSlug } = Astro.props;
       rootIndex += 1;
       listEl.append(buildCommentItem(entry, String(rootIndex), false));
       const children = byParent.get(entryId(entry)) ?? [];
-      children.forEach((child, childIndex) => {
+      for (const child of children) {
+        // Owner replies stay unnumbered; nested visitor comments keep a label.
         listEl.append(
-          buildCommentItem(child, `${rootIndex}.${childIndex + 1}`, true),
+          buildCommentItem(child, child.is_owner ? null : `${rootIndex}`, true),
         );
-      });
+      }
     }
 
     // Orphan replies (parent missing) still show, indented.
     const rootIds = new Set(roots.map(entryId));
-    let orphanIndex = 0;
     for (const entry of entries) {
       if (!entry.reply_to_id) continue;
       if (rootIds.has(Number(entry.reply_to_id))) continue;
-      orphanIndex += 1;
-      listEl.append(buildCommentItem(entry, `·${orphanIndex}`, true));
+      listEl.append(buildCommentItem(entry, entry.is_owner ? null : "·", true));
     }
   }
 

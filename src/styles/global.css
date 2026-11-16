@@ -11,6 +11,10 @@
   --comments-border: #222;
   --comments-muted: #aaa;
   --comments-status: #ccc;
+  --owner-reply-bg: #23262c;
+  --owner-reply-text: #f3efe6;
+  --owner-reply-meta: #b7b1a6;
+  --owner-reply-border: #8f887c;
   --input-bg: #fff;
   --input-text: #111;
   --submit-bg: #fff;
@@ -33,6 +37,10 @@
     --comments-border: #d4cfc4;
     --comments-muted: #888;
     --comments-status: #666;
+    --owner-reply-bg: #ddd4c2;
+    --owner-reply-text: #2f2c27;
+    --owner-reply-meta: #6e675c;
+    --owner-reply-border: #9a9080;
   }
 }
 
@@ -439,12 +447,19 @@ p {
 }
 
 .comment-item--owner {
-  border-left: 2px solid var(--comments-muted);
-  padding-left: 0.75rem;
+  background: var(--owner-reply-bg);
+  color: var(--owner-reply-text);
+  border-left: 2px solid var(--owner-reply-border);
+  border-bottom-color: transparent;
+  padding: 0.75rem 0.85rem;
+  margin-bottom: 1.35rem;
 }
 
 .comment-item--nested {
   margin-left: 1.25rem;
+}
+
+.comment-item--nested:not(.comment-item--owner) {
   padding-left: 0.75rem;
   border-left: 2px solid var(--comments-border);
 }
@@ -460,6 +475,16 @@ p {
 .comment-item--owner .comment-name {
   font-style: normal;
   font-weight: 700;
+  color: var(--owner-reply-text);
+}
+
+.comment-item--owner .comment-body {
+  color: var(--owner-reply-text);
+}
+
+.comment-item--owner .comment-date,
+.comment-item--owner .comment-owner-badge {
+  color: var(--owner-reply-meta);
 }
 
 .comment-owner-badge {
