@@ -9,6 +9,6 @@ picking up Japanese, catching up w/ Pepper's adopter, glad to see him doing well
 
 joining all kinds of activities to get some freebies :3
 
-tokyo is getting colder these days, I'm taking good care of myself 🫶
+Tokyo is getting colder these days, I'm taking good care of myself 🫶
 
 <!--LAST_UPDATED-->
