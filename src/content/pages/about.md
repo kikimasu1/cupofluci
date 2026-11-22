@@ -5,7 +5,7 @@ description: Things about me that can keep you busy.
 
 Hi, I’m Luci.
 
-This is a place to post my writing, share my thoughts, and make friends. I love writing, might as well share it with the rest of the world :3
+This is a place to post my writing, share my thoughts, and make friends. I love writing, might as well share it with the rest of the world :D
 
 I value curiosity, authenticity and integrity. I want to make this world a better place. And be friends with those who think this way.
 
@@ -15,8 +15,6 @@ Doing random tech related jobs around the world sounds like a good idea to me, I
 
 Writing is **100%** done by me, not AI
 
-<!--LAST_UPDATED-->
-
 ## TIME LINE FOR CONTEXT
 
 - 2001: born in Nancheng, Jiangxi
@@ -25,7 +23,7 @@ Writing is **100%** done by me, not AI
 - 2021 to 2023: moved to Liverpool, England to get a bachelor's degree in Computer Science at University of Liverpool, joined an LGBTQ+ society, had fun exploring the UK & Europe, interned at a Liverpool startup & worked remotely for a healthcare company
 - 2023 to 2025: moved to New York City to earn my master's degree at Cornell Tech in Information Systems
 - 2025: moved to Tampa, FL after getting a job that allows me to work fully remotely, just 10 minutes away from the beach
-- 2026: moved to Tokyo, Japan. The public transportation is superb, food is great, let alone the amazing 24/7 convenience stores. Hopefully I get to improve my Japanese and make more friends here.
+- 2026: moved to Tokyo, Japan. The public transportation is superb, food is great, let alone the amazing 24/7 convenience stores. Made many friends and is exploring different lifestyles.
 
 ## I'M AMBITIOUSLY FOCUSED ON CREATING
 
